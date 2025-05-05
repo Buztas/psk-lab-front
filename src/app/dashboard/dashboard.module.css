@@ -1,0 +1,250 @@
+.container {
+  min-height: 100vh;
+  background-color: #fff8f0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.logoIcon {
+  font-size: 1.5rem;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #8b4513;
+  margin: 0;
+}
+
+.navButtons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.navButton {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navButton:hover {
+  background-color: #f5f5f5;
+}
+
+.badge {
+  background-color: #8b4513;
+  color: white;
+  border-radius: 50%;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.shopSelection {
+  padding: 1rem;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.shopDropdown {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  cursor: pointer;
+}
+
+.menuContainer {
+  padding: 1rem;
+}
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.coffeeCard {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.coffeeImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder {
+  width: 80%;
+  height: 80%;
+  position: relative;
+}
+
+.placeholder::before,
+.placeholder::after {
+  content: "";
+  position: absolute;
+  background-color: #ddd;
+}
+
+.placeholder::before {
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 1px;
+  transform: rotate(45deg);
+  transform-origin: top;
+}
+
+.placeholder::after {
+  top: 0;
+  left: 50%;
+  height: 100%;
+  width: 1px;
+  transform: rotate(-45deg);
+  transform-origin: top;
+}
+
+.coffeeName {
+  padding: 0.75rem;
+  margin: 0;
+  font-size: 1.1rem;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.pricingOptions {
+  padding: 0.75rem;
+}
+
+.priceOption {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.priceOption:last-child {
+  margin-bottom: 0;
+}
+
+.sizeIcon {
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem;
+  }
+
+  .logo {
+    justify-content: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .navButtons {
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+
+  .navButton {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+
+  .menuGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .coffeeName {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
+
+  .pricingOptions {
+    padding: 0.5rem;
+  }
+
+  .priceOption {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .sizeIcon {
+    font-size: 0.9rem;
+  }
+
+  .shopDropdown {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .menuGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .navButtons {
+    flex-wrap: nowrap;
+  }
+
+  .navButton {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.75rem;
+  }
+
+  .badge {
+    width: 1rem;
+    height: 1rem;
+    font-size: 0.7rem;
+  }
+
+  .shopSelection {
+    padding: 0.75rem;
+  }
+
+  .menuContainer {
+    padding: 0.75rem;
+  }
+}

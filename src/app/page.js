@@ -1,14 +1,22 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import styles from "./auth.module.css"
 
 export default function AuthPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [activeTab, setActiveTab] = useState("login")
+  const router = useRouter()
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // validate and authenticate here
+    router.push("/dashboard")
   }
 
   return (
@@ -35,7 +43,7 @@ export default function AuthPage() {
         </div>
 
         {activeTab === "login" ? (
-          <div className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <h2 className={styles.formTitle}>Welcome Back</h2>
             <p className={styles.formDescription}>Sign in to your Kavapp account</p>
 
@@ -70,10 +78,12 @@ export default function AuthPage() {
               </div>
             </div>
 
-            <button className={styles.submitButton}>Login</button>
-          </div>
+            <button type="submit" className={styles.submitButton}>
+              Login
+            </button>
+          </form>
         ) : (
-          <div className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <h2 className={styles.formTitle}>Create Account</h2>
             <p className={styles.formDescription}>Join Kavapp to order coffee</p>
 
@@ -107,8 +117,10 @@ export default function AuthPage() {
               <p className={styles.passwordHint}>Password must be at least 8 characters long</p>
             </div>
 
-            <button className={styles.submitButton}>Create Account</button>
-          </div>
+            <button type="submit" className={styles.submitButton}>
+              Create Account
+            </button>
+          </form>
         )}
 
       </div>
