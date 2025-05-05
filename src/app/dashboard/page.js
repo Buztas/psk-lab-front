@@ -1,11 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import styles from "./dashboard.module.css"
 
 export default function DashboardPage() {
   const [selectedShop, setSelectedShop] = useState("Ozo g. 25, PC Akropolis")
   const [cartCount, setCartCount] = useState(0)
+  const router = useRouter()
 
   // Sample data
   const coffeeShops = [
@@ -15,8 +17,8 @@ export default function DashboardPage() {
     "Pilies g. 8, Old Town",
   ]
 
-  // Sample data 
-  const coffeeMenu = [
+  // Sample data
+  const menu = [
     { name: "Latte Macchiato", prices: { S: 1.85, M: 2.15, L: 2.8 } },
     { name: "Cappuccino", prices: { S: 1.85, M: 2.15, L: 2.8 } },
     { name: "Flat White", prices: { S: 1.85, M: 2.15, L: 2.8 } },
@@ -25,8 +27,8 @@ export default function DashboardPage() {
     { name: "Americano", prices: { S: 1.7, M: 2.0, L: 2.5 } },
   ]
 
-  const addToCart = () => {
-    setCartCount(cartCount + 1)
+  const navigateToMenuItem = (menuItemName) => {
+    router.push(`/menuItem/${encodeURIComponent(menuItemName)}`)
   }
 
   return (
@@ -37,8 +39,8 @@ export default function DashboardPage() {
           <h1 className={styles.logoText}>Kavapp</h1>
         </div>
         <div className={styles.navButtons}>
-          <button className={styles.navButton}>Menu</button>
-          <button className={styles.navButton}>
+          <button className={`${styles.navButton} ${styles.activeNavButton}`}>Menu</button>
+          <button className={styles.navButton} onClick={() => router.push("/cart")}>
             Cart <span className={styles.badge}>{cartCount}</span>
           </button>
           <button className={styles.navButton}>Account</button>
@@ -57,21 +59,26 @@ export default function DashboardPage() {
 
       <div className={styles.menuContainer}>
         <div className={styles.menuGrid}>
-          {coffeeMenu.map((coffee) => (
-            <div key={coffee.name} className={styles.coffeeCard}>
-              <div className={styles.coffeeImage}>
+          {menu.map((menuItem) => (
+            <div
+              key={menuItem.name}
+              className={styles.menuItemCard}
+              onClick={() => navigateToMenuItem(menuItem.name)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className={styles.menuItemImage}>
                 <div className={styles.placeholder}></div>
               </div>
-              <h3 className={styles.coffeeName}>{coffee.name}</h3>
+              <h3 className={styles.menuItemName}>{menuItem.name}</h3>
               <div className={styles.pricingOptions}>
-                <div className={styles.priceOption} onClick={addToCart}>
-                  <span className={styles.sizeIcon}>★</span> S - {coffee.prices.S.toFixed(2)} eur
+                <div className={styles.priceOption}>
+                  <span className={styles.sizeIcon}>★</span> S - {menuItem.prices.S.toFixed(2)} eur
                 </div>
-                <div className={styles.priceOption} onClick={addToCart}>
-                  <span className={styles.sizeIcon}>♥</span> M - {coffee.prices.M.toFixed(2)} eur
+                <div className={styles.priceOption}>
+                  <span className={styles.sizeIcon}>♥</span> M - {menuItem.prices.M.toFixed(2)} eur
                 </div>
-                <div className={styles.priceOption} onClick={addToCart}>
-                  <span className={styles.sizeIcon}>●</span> L - {coffee.prices.L.toFixed(2)} eur
+                <div className={styles.priceOption}>
+                  <span className={styles.sizeIcon}>●</span> L - {menuItem.prices.L.toFixed(2)} eur
                 </div>
               </div>
             </div>

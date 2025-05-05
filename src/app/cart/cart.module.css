@@ -1,0 +1,207 @@
+.container {
+    min-height: 100vh;
+    background-color: #fff8f0;
+  }
+  
+  .cartContainer {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .cartContent {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .cartTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 1rem 0;
+  }
+  
+  .orderItems {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .orderItem {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+  
+  .itemDetails {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+  
+  .itemName {
+    font-weight: 500;
+  }
+  
+  .itemQuantity {
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+  
+  .itemPrice {
+    font-weight: 500;
+    text-align: right;
+    min-width: 70px;
+  }
+  
+  .itemOptions {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .itemActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .actionButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+  }
+  
+  .actionButton:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .itemDivider {
+    height: 1px;
+    background-color: #ddd;
+    margin: 0.5rem 0 1rem;
+  }
+  
+  .orderItem:last-child .itemDivider {
+    display: none;
+  }
+  
+  .totalSection {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #ddd;
+  }
+  
+  .shopAddress {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .orderButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #8bc34a;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .orderButton:hover {
+    background-color: #7cb342;
+  }
+  
+  .browseButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #8b4513;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .browseButton:hover {
+    background-color: #6b3100;
+  }
+  
+  .emptyCart {
+    text-align: center;
+    padding: 2rem 0;
+    color: #666;
+  }
+  
+  .activeNavButton {
+    background-color: #f5f5f5;
+  }
+  
+  @media (max-width: 768px) {
+    .cartContent {
+      padding: 1rem;
+    }
+    
+    .orderItems {
+      padding: 0.75rem;
+    }
+    
+    .cartTitle {
+      font-size: 1.1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cartContainer {
+      padding: 0.75rem;
+    }
+    
+    .cartContent {
+      padding: 0.75rem;
+      border-radius: 4px;
+    }
+    
+    .orderItems {
+      padding: 0.5rem;
+    }
+    
+    .itemDetails {
+      flex-wrap: wrap;
+    }
+    
+    .itemName {
+      width: 100%;
+      margin-bottom: 0.25rem;
+    }
+    
+    .itemQuantity {
+      margin-left: 0;
+    }
+    
+    .orderButton,
+    .browseButton {
+      padding: 0.6rem;
+      font-size: 0.9rem;
+    }
+  }
+  
