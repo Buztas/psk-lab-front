@@ -1,103 +1,117 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import { useState } from "react"
+import styles from "./auth.module.css"
+
+export default function AuthPage() {
+  const [showPassword, setShowPassword] = useState(false)
+  const [activeTab, setActiveTab] = useState("login")
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className={styles.container}>
+      <div className={styles.authCard}>
+        <div className={styles.logo}>
+          <span className={styles.logoIcon}>☕</span>
+          <h1 className={styles.logoText}>Kavapp</h1>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className={styles.tabs}>
+          <button
+            className={`${styles.tabButton} ${activeTab === "login" ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab("login")}
+          >
+            Login
+          </button>
+          <button
+            className={`${styles.tabButton} ${activeTab === "signup" ? styles.activeTab : ""}`}
+            onClick={() => setActiveTab("signup")}
+          >
+            Sign Up
+          </button>
+        </div>
+
+        {activeTab === "login" ? (
+          <div className={styles.form}>
+            <h2 className={styles.formTitle}>Welcome Back</h2>
+            <p className={styles.formDescription}>Sign in to your Kavapp account</p>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="login-email" className={styles.label}>
+                Email
+              </label>
+              <input id="login-email" type="email" placeholder="you@example.com" className={styles.input} />
+            </div>
+
+            <div className={styles.formGroup}>
+              <div className={styles.labelRow}>
+                <label htmlFor="login-password" className={styles.label}>
+                  Password
+                </label>
+              </div>
+              <div className={styles.passwordInput}>
+                <input
+                  id="login-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className={styles.input}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordToggle}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
+            </div>
+
+            <button className={styles.submitButton}>Login</button>
+          </div>
+        ) : (
+          <div className={styles.form}>
+            <h2 className={styles.formTitle}>Create Account</h2>
+            <p className={styles.formDescription}>Join Kavapp to order coffee</p>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="signup-email" className={styles.label}>
+                Email
+              </label>
+              <input id="signup-email" type="email" placeholder="you@example.com" className={styles.input} />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label htmlFor="signup-password" className={styles.label}>
+                Password
+              </label>
+              <div className={styles.passwordInput}>
+                <input
+                  id="signup-password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className={styles.input}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className={styles.passwordToggle}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                </button>
+              </div>
+              <p className={styles.passwordHint}>Password must be at least 8 characters long</p>
+            </div>
+
+            <button className={styles.submitButton}>Create Account</button>
+          </div>
+        )}
+
+      </div>
     </div>
-  );
+  )
 }
