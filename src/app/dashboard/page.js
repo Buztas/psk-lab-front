@@ -1,12 +1,15 @@
+
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import styles from "./dashboard.module.css"
+import { authService } from "../../services/authService"
 
 export default function DashboardPage() {
   const [selectedShop, setSelectedShop] = useState("Ozo g. 25, PC Akropolis")
   const [cartCount, setCartCount] = useState(0)
+  const [user, setUser] = useState(null)
   const router = useRouter()
 
   // Sample data
@@ -27,8 +30,32 @@ export default function DashboardPage() {
     { name: "Americano", prices: { S: 1.7, M: 2.0, L: 2.5 } },
   ]
 
+  useEffect(() => {
+    const checkAuth = () => {
+      if (!authService.isAuthenticated()) {
+        router.push('/')
+        return
+      }
+      
+      const currentUser = authService.getCurrentUser()
+      setUser(currentUser)
+    }
+    
+    checkAuth()
+  }, [router])
+
   const navigateToMenuItem = (menuItemName) => {
     router.push(`/menuItem/${encodeURIComponent(menuItemName)}`)
+  }
+  
+  const handleLogout = () => {
+    authService.logout()
+    router.push('/')
+  }
+  
+  const navigateToAccount = () => {
+    alert(`Logged in as: ${user?.email || 'Unknown'}\nClick OK to log out.`)
+    handleLogout()
   }
 
   return (
@@ -43,7 +70,12 @@ export default function DashboardPage() {
           <button className={styles.navButton} onClick={() => router.push("/cart")}>
             Cart <span className={styles.badge}>{cartCount}</span>
           </button>
-          <button className={styles.navButton}>Account</button>
+          <div className={styles.userInfo}>
+            {user && <span className={styles.userEmail}>{user.email}</span>}
+            <button onClick={handleLogout} className={styles.logoutButton}>
+              Logout
+            </button>
+          </div>
         </div>
       </nav>
 

@@ -13,6 +13,42 @@
   flex-wrap: wrap;
 }
 
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.userEmail {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #333;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logoutButton {
+  padding: 0.4rem 0.75rem;
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #6a340f;
+}
+
 .activeNavButton {
   background-color: #f5f5f5;
 }
@@ -194,6 +230,17 @@
     font-size: 0.8rem;
     justify-content: center;
   }
+  
+  .userInfo {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .userEmail {
+    max-width: 120px;
+  }
 
   .menuGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -242,6 +289,16 @@
     width: 1rem;
     height: 1rem;
     font-size: 0.7rem;
+  }
+  
+  .logoutButton {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .userEmail {
+    font-size: 0.8rem;
+    max-width: 100px;
   }
 
   .shopSelection {
