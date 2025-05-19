@@ -1,226 +1,339 @@
 .container {
-    min-height: 100vh;
-    background-color: #fff8f0;
-  }
-  
-  .detailContainer {
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-  }
-  
+  min-height: 100vh;
+  background-color: #fff8f0;
+}
+
+.detailContainer {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.itemDetail {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menuItemType {
+  display: inline-block;
+  background-color: #f0e6dd;
+  color: #8b4513;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.05rem;
+  align-self: flex-start;
+}
+
+.menuItemName {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+  color: #333;
+}
+
+.menuItemDescription {
+  width: 100%;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.menuItemBasePrice {
+  width: 100%;
+  font-size: 1.1rem;
+  color: #8b4513;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0e6dd;
+  text-align: center;
+}
+
+.optionsContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.optionSection {
+  width: 100%;
+}
+
+.optionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.radioLabel:hover {
+  background-color: #f9f5f1;
+}
+
+.radioInput {
+  margin: 0;
+  cursor: pointer;
+}
+
+.radioLabel:has(input:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.radioText {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.outOfStock {
+  color: #e53935;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.quantitySection {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.quantityInput {
+  width: 3rem;
+  height: 2rem;
+  border: none;
+  text-align: center;
+  font-size: 1rem;
+  -moz-appearance: textfield;
+}
+
+.quantityInput::-webkit-outer-spin-button,
+.quantityInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantityButtons {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #ddd;
+}
+
+.quantityButton {
+  background: none;
+  border: none;
+  height: 1rem;
+  width: 1.5rem;
+  font-size: 0.6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.quantityButton:hover {
+  background-color: #f5f5f5;
+}
+
+.quantityButton:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.stockInfo {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.totalSection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid #f0e6dd;
+  border-bottom: 1px solid #f0e6dd;
+}
+
+.totalLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.totalPrice {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #8b4513;
+}
+
+.addToCartButton {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addToCartButton:hover {
+  background-color: #6a340f;
+}
+
+.addToCartButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Loading and error states */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  min-height: 60vh;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #8b4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+  background-color: #fff1f0;
+  border: 1px solid #ffccc7;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+.errorMessage {
+  color: #cf1322;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.backButton {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.backButton:hover {
+  background-color: #6a340f;
+}
+
+@media (max-width: 768px) {
   .itemDetail {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    padding: 1rem;
   }
-  
-  .menuItemImage {
-    width: 100%;
-    max-width: 300px;
-    aspect-ratio: 1 / 1;
-    background-color: #f5f5f5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  
-  .placeholder {
-    width: 80%;
-    height: 80%;
-    position: relative;
-  }
-  
-  .placeholder::before,
-  .placeholder::after {
-    content: "";
-    position: absolute;
-    background-color: #ddd;
-  }
-  
-  .placeholder::before {
-    top: 0;
-    left: 50%;
-    height: 100%;
-    width: 1px;
-    transform: rotate(45deg);
-    transform-origin: top;
-  }
-  
-  .placeholder::after {
-    top: 0;
-    left: 50%;
-    height: 100%;
-    width: 1px;
-    transform: rotate(-45deg);
-    transform-origin: top;
-  }
-  
+    
   .menuItemName {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 0.5rem 0 1.5rem;
-    text-align: center;
+    font-size: 1.25rem;
+    margin: 0.5rem 0 1rem;
   }
-  
+    
   .optionsContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  .optionSection {
-    width: 100%;
-  }
-  
-  .optionTitle {
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-  }
-  
-  .radioGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .radioLabel {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-  }
-  
-  .radioInput {
-    margin: 0;
-    cursor: pointer;
-  }
-  
-  .radioText {
-    font-size: 0.9rem;
-  }
-  
-  .quantitySection {
-    display: flex;
-    align-items: center;
     gap: 1rem;
   }
   
-  .quantityControl {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  .quantityInput {
-    width: 3rem;
-    height: 2rem;
-    border: none;
-    text-align: center;
-    font-size: 1rem;
-    -moz-appearance: textfield;
-  }
-  
-  .quantityInput::-webkit-outer-spin-button,
-  .quantityInput::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  
-  .quantityButtons {
-    display: flex;
+  .totalSection {
     flex-direction: column;
-    border-left: 1px solid #ddd;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
-  
-  .quantityButton {
-    background: none;
-    border: none;
-    height: 1rem;
-    width: 1.5rem;
-    font-size: 0.6rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-  }
-  
-  .quantityButton:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .addToCartButton {
-    width: 100%;
+}
+
+@media (max-width: 480px) {
+  .detailContainer {
     padding: 0.75rem;
-    background-color: #e9e9e9;
-    border: none;
+  }
+    
+  .itemDetail {
+    padding: 0.75rem;
     border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
   }
-  
-  .addToCartButton:hover {
-    background-color: #d9d9d9;
+    
+  .menuItemName {
+    font-size: 1.1rem;
   }
-  
-  @media (max-width: 768px) {
-    .itemDetail {
-      padding: 1rem;
-    }
-  
-    .menuItemName {
-      font-size: 1.25rem;
-      margin: 0.5rem 0 1rem;
-    }
-  
-    .optionsContainer {
-      gap: 1rem;
-    }
+    
+  .optionTitle {
+    font-size: 0.9rem;
   }
-  
-  @media (max-width: 480px) {
-    .detailContainer {
-      padding: 0.75rem;
-    }
-  
-    .itemDetail {
-      padding: 0.75rem;
-      border-radius: 4px;
-    }
-  
-    .menuItemImage {
-      max-width: 200px;
-    }
-  
-    .menuItemName {
-      font-size: 1.1rem;
-    }
-  
-    .optionTitle {
-      font-size: 0.9rem;
-    }
-  
-    .radioText {
-      font-size: 0.85rem;
-    }
-  
-    .addToCartButton {
-      padding: 0.6rem;
-      font-size: 0.9rem;
-    }
+    
+  .radioText {
+    font-size: 0.85rem;
   }
-  
+    
+  .addToCartButton {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
