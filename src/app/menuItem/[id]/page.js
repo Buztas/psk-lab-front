@@ -2,12 +2,16 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { use } from 'react' 
 import styles from "./menu-item.module.css"
 import navStyles from "../../dashboard/dashboard.module.css"
 import { authService } from "../../../services/authService"
 import { menuService } from "../../../services/menuService"
 
 export default function ItemDetailPage({ params }) {
+  const resolvedParams = use(params)
+  const itemId = resolvedParams.id
+  
   const router = useRouter()
   const [menuItem, setMenuItem] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -16,7 +20,7 @@ export default function ItemDetailPage({ params }) {
   const [quantity, setQuantity] = useState(1)
   const [cartCount, setCartCount] = useState(0)
   const [user, setUser] = useState(null)
-WS
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -28,14 +32,14 @@ WS
         const currentUser = authService.getCurrentUser()
         setUser(currentUser)
 
-        if (!params?.id) {
+        if (!itemId) {
           setError("No menu item specified")
           setLoading(false)
           return
         }
 
         setLoading(true)
-        const itemData = await menuService.getMenuItemById(params.id)
+        const itemData = await menuService.getMenuItemById(itemId)
         setMenuItem(itemData)
         
         if (itemData.variations && itemData.variations.length > 0) {
@@ -51,7 +55,7 @@ WS
     }
 
     loadData()
-  }, [params.id, router])
+  }, [itemId, router])
 
   const incrementQuantity = () => {
     const maxStock = selectedVariation ? selectedVariation.stock : (menuItem?.stock || 1)
@@ -72,13 +76,19 @@ WS
   }
 
   const addToCart = () => {
+    const basePrice = Number(menuItem.price);
+    const variationPrice = selectedVariation ? Number(selectedVariation.price) : 0;
+    const totalItemPrice = basePrice + variationPrice;
+    
     const itemForCart = {
       id: menuItem.id,
       name: menuItem.name,
-      price: selectedVariation ? selectedVariation.price : menuItem.price,
+      basePrice: basePrice,
+      price: totalItemPrice,
       quantity: quantity,
       variationId: selectedVariation ? selectedVariation.id : null,
-      variationName: selectedVariation ? selectedVariation.name : null
+      variationName: selectedVariation ? selectedVariation.name : null,
+      variationPrice: variationPrice
     }
     
     console.log("Added to cart:", itemForCart)
@@ -163,14 +173,14 @@ WS
     )
   }
 
-  const displayPrice = selectedVariation 
-    ? Number(selectedVariation.price).toFixed(2) 
-    : Number(menuItem.price).toFixed(2)
+  const basePrice = Number(menuItem.price);
+  const variationPrice = selectedVariation ? Number(selectedVariation.price) : 0;
+  const displayPrice = basePrice + variationPrice;
 
   const currentStock = selectedVariation 
     ? selectedVariation.stock 
-    : menuItem.stock
-  const isInStock = currentStock > 0
+    : menuItem.stock;
+  const isInStock = currentStock > 0;
 
   return (
     <div className={styles.container}>
@@ -208,7 +218,7 @@ WS
           </div>
 
           <div className={styles.menuItemBasePrice}>
-            Base price: {Number(menuItem.price).toFixed(2)} eur
+            Base price: {basePrice.toFixed(2)} eur
           </div>
 
           <div className={styles.optionsContainer}>
@@ -228,7 +238,7 @@ WS
                       disabled={variation.stock <= 0}
                     />
                     <span className={styles.radioText}>
-                      {variation.name} - {Number(variation.price).toFixed(2)} eur
+                      {variation.name} - +{Number(variation.price).toFixed(2)} eur
                       {variation.stock <= 0 && <span className={styles.outOfStock}> (Out of stock)</span>}
                     </span>
                   </label>
