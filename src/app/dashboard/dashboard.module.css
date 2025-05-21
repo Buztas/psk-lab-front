@@ -106,22 +106,6 @@
   font-size: 0.75rem;
 }
 
-.shopSelection {
-  padding: 1rem;
-  background-color: white;
-  border-bottom: 1px solid #ddd;
-}
-
-.shopDropdown {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  background-color: white;
-  cursor: pointer;
-}
-
 .menuContainer {
   padding: 1rem;
 }
@@ -137,73 +121,129 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.menuItemImage {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background-color: #f5f5f5;
+  padding: 1rem;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.placeholder {
-  width: 80%;
-  height: 80%;
-  position: relative;
+.menuItemCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
-.placeholder::before,
-.placeholder::after {
-  content: "";
-  position: absolute;
-  background-color: #ddd;
-}
-
-.placeholder::before {
-  top: 0;
-  left: 50%;
-  height: 100%;
-  width: 1px;
-  transform: rotate(45deg);
-  transform-origin: top;
-}
-
-.placeholder::after {
-  top: 0;
-  left: 50%;
-  height: 100%;
-  width: 1px;
-  transform: rotate(-45deg);
-  transform-origin: top;
+.menuItemType {
+  display: inline-block;
+  background-color: #f0e6dd;
+  color: #8b4513;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 0.05rem;
 }
 
 .menuItemName {
-  padding: 0.75rem;
-  margin: 0;
-  font-size: 1.1rem;
-  text-align: center;
-  border-bottom: 1px solid #eee;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  color: #333;
 }
 
-.pricingOptions {
-  padding: 0.75rem;
+.menuItemDescription {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+  line-height: 1.4;
 }
 
-.priceOption {
+.menuItemInfo {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #eee;
 }
 
-.priceOption:last-child {
-  margin-bottom: 0;
-}
-
-.sizeIcon {
+.menuItemPrice {
+  font-weight: bold;
   font-size: 1.1rem;
+  color: #8b4513;
+}
+
+.menuItemStock {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.variationsLabel {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  text-align: right;
+  color: #8b4513;
+  font-style: italic;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #8b4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+  background-color: #fff1f0;
+  border: 1px solid #ffccc7;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+.errorMessage {
+  color: #cf1322;
+  margin-bottom: 1rem;
+}
+
+.retryButton {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.retryButton:hover {
+  background-color: #6a340f;
+}
+
+.emptyContainer {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
 }
 
 @media (max-width: 768px) {
@@ -248,25 +288,14 @@
   }
 
   .menuItemName {
-    font-size: 0.9rem;
-    padding: 0.5rem;
+    font-size: 1rem;
   }
 
-  .pricingOptions {
-    padding: 0.5rem;
-  }
-
-  .priceOption {
+  .menuItemDescription {
     font-size: 0.8rem;
-    margin-bottom: 0.25rem;
   }
 
-  .sizeIcon {
-    font-size: 0.9rem;
-  }
-
-  .shopDropdown {
-    padding: 0.6rem;
+  .menuItemPrice {
     font-size: 0.9rem;
   }
 }
@@ -299,10 +328,6 @@
   .userEmail {
     font-size: 0.8rem;
     max-width: 100px;
-  }
-
-  .shopSelection {
-    padding: 0.75rem;
   }
 
   .menuContainer {

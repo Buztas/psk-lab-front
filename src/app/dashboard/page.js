@@ -1,61 +1,56 @@
-
 "use client"
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import styles from "./dashboard.module.css"
 import { authService } from "../../services/authService"
+import { menuService } from "../../services/menuService"
 
 export default function DashboardPage() {
-  const [selectedShop, setSelectedShop] = useState("Ozo g. 25, PC Akropolis")
+  const [menuItems, setMenuItems] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
   const [cartCount, setCartCount] = useState(0)
   const [user, setUser] = useState(null)
   const router = useRouter()
 
-  // Sample data
-  const coffeeShops = [
-    "Ozo g. 25, PC Akropolis",
-    "Gedimino pr. 9, Vilnius",
-    "Konstitucijos pr. 16, Europa",
-    "Pilies g. 8, Old Town",
-  ]
-
-  // Sample data
-  const menu = [
-    { name: "Latte Macchiato", prices: { S: 1.85, M: 2.15, L: 2.8 } },
-    { name: "Cappuccino", prices: { S: 1.85, M: 2.15, L: 2.8 } },
-    { name: "Flat White", prices: { S: 1.85, M: 2.15, L: 2.8 } },
-    { name: "Black Coffee", prices: { S: 1.85, M: 2.15, L: 2.8 } },
-    { name: "Espresso", prices: { S: 1.5, M: 1.85, L: 2.2 } },
-    { name: "Americano", prices: { S: 1.7, M: 2.0, L: 2.5 } },
-  ]
-
   useEffect(() => {
-    const checkAuth = () => {
-      if (!authService.isAuthenticated()) {
-        router.push('/')
-        return
+    const checkAuth = async () => {
+      try {
+        if (!authService.isAuthenticated()) {
+          router.push('/')
+          return
+        }
+        
+        const currentUser = authService.getCurrentUser()
+        setUser(currentUser)
+        
+        setLoading(true)
+        const menuData = await menuService.getAllMenuItems()
+        setMenuItems(menuData.content || [])
+        setLoading(false)
+      } catch (err) {
+        console.error("Error loading data:", err)
+        setError("Failed to load menu items. Please try again.")
+        setLoading(false)
       }
-      
-      const currentUser = authService.getCurrentUser()
-      setUser(currentUser)
     }
     
     checkAuth()
   }, [router])
 
-  const navigateToMenuItem = (menuItemName) => {
-    router.push(`/menuItem/${encodeURIComponent(menuItemName)}`)
+  const navigateToMenuItem = (menuItemId) => {
+    router.push(`/menuItem/${encodeURIComponent(menuItemId)}`)
   }
   
   const handleLogout = () => {
     authService.logout()
     router.push('/')
   }
-  
-  const navigateToAccount = () => {
-    alert(`Logged in as: ${user?.email || 'Unknown'}\nClick OK to log out.`)
-    handleLogout()
+
+  const getItemTypeLabel = (type) => {
+    if (!type) return "";
+    return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
   }
 
   return (
@@ -79,43 +74,61 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      <div className={styles.shopSelection}>
-        <select value={selectedShop} onChange={(e) => setSelectedShop(e.target.value)} className={styles.shopDropdown}>
-          {coffeeShops.map((shop) => (
-            <option key={shop} value={shop}>
-              {shop}
-            </option>
-          ))}
-        </select>
-      </div>
-
       <div className={styles.menuContainer}>
-        <div className={styles.menuGrid}>
-          {menu.map((menuItem) => (
-            <div
-              key={menuItem.name}
-              className={styles.menuItemCard}
-              onClick={() => navigateToMenuItem(menuItem.name)}
-              style={{ cursor: "pointer" }}
+        {loading ? (
+          <div className={styles.loadingContainer}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Loading menu items...</p>
+          </div>
+        ) : error ? (
+          <div className={styles.errorContainer}>
+            <p className={styles.errorMessage}>{error}</p>
+            <button 
+              className={styles.retryButton}
+              onClick={() => window.location.reload()}
             >
-              <div className={styles.menuItemImage}>
-                <div className={styles.placeholder}></div>
+              Retry
+            </button>
+          </div>
+        ) : menuItems.length === 0 ? (
+          <div className={styles.emptyContainer}>
+            <p>No menu items available.</p>
+          </div>
+        ) : (
+          <div className={styles.menuGrid}>
+            {menuItems.map((menuItem) => (
+              <div
+                key={menuItem.id}
+                className={styles.menuItemCard}
+                onClick={() => navigateToMenuItem(menuItem.id)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className={styles.menuItemType}>
+                  {getItemTypeLabel(menuItem.type)}
+                </div>
+                <h3 className={styles.menuItemName}>{menuItem.name}</h3>
+                <p className={styles.menuItemDescription}>
+                  {menuItem.description.length > 100 
+                    ? menuItem.description.substring(0, 100) + "..." 
+                    : menuItem.description}
+                </p>
+                <div className={styles.menuItemInfo}>
+                  <div className={styles.menuItemPrice}>
+                    {Number(menuItem.price).toFixed(2)} eur
+                  </div>
+                  <div className={styles.menuItemStock}>
+                    {menuItem.stock > 0 ? `In stock: ${menuItem.stock}` : "Out of stock"}
+                  </div>
+                </div>
+                {menuItem.variations && menuItem.variations.length > 0 && (
+                  <div className={styles.variationsLabel}>
+                    {menuItem.variations.length} variations available
+                  </div>
+                )}
               </div>
-              <h3 className={styles.menuItemName}>{menuItem.name}</h3>
-              <div className={styles.pricingOptions}>
-                <div className={styles.priceOption}>
-                  <span className={styles.sizeIcon}>★</span> S - {menuItem.prices.S.toFixed(2)} eur
-                </div>
-                <div className={styles.priceOption}>
-                  <span className={styles.sizeIcon}>♥</span> M - {menuItem.prices.M.toFixed(2)} eur
-                </div>
-                <div className={styles.priceOption}>
-                  <span className={styles.sizeIcon}>●</span> L - {menuItem.prices.L.toFixed(2)} eur
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
