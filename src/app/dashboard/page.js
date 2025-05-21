@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import styles from "./dashboard.module.css"
 import { authService } from "../../services/authService"
 import { menuService } from "../../services/menuService"
+import { updateCartCount } from "../../utils/cartUtils"
 
 export default function DashboardPage() {
   const [menuItems, setMenuItems] = useState([])
@@ -25,6 +26,8 @@ export default function DashboardPage() {
         const currentUser = authService.getCurrentUser()
         setUser(currentUser)
         
+        updateCartCount(setCartCount)
+        
         setLoading(true)
         const menuData = await menuService.getAllMenuItems()
         setMenuItems(menuData.content || [])
@@ -37,6 +40,15 @@ export default function DashboardPage() {
     }
     
     checkAuth()
+    
+    const handleCartUpdate = () => {
+      updateCartCount(setCartCount)
+    }
+    
+    window.addEventListener('cartUpdated', handleCartUpdate)
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate)
+    }
   }, [router])
 
   const navigateToMenuItem = (menuItemId) => {
@@ -63,7 +75,7 @@ export default function DashboardPage() {
         <div className={styles.navButtons}>
           <button className={`${styles.navButton} ${styles.activeNavButton}`}>Menu</button>
           <button className={styles.navButton} onClick={() => router.push("/cart")}>
-            Cart <span className={styles.badge}>{cartCount}</span>
+              Cart {cartCount > 0 && <span className={styles.badge}>{cartCount}</span>}
           </button>
           <div className={styles.userInfo}>
             {user && <span className={styles.userEmail}>{user.email}</span>}
