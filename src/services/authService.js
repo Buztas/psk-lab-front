@@ -1,3 +1,5 @@
+import { jwtDecode } from "jwt-decode";
+
 const API_URL = 'http://localhost:8080';
 
 export const authService = {
@@ -23,12 +25,12 @@ export const authService = {
       }
 
       const data = await response.json();
+      const decodedData = jwtDecode(data.token);
       
       localStorage.setItem('token', data.token);
-      
       const user = {
         email: email,
-        role: data.userResponse?.roleType || 'CUSTOMER'
+        role: decodedData.role || 'CUSTOMER'
       };
       localStorage.setItem('user', JSON.stringify(user));
       
@@ -82,6 +84,7 @@ export const authService = {
 
   getCurrentUser: () => {
     const userStr = localStorage.getItem('user');
+    console.log("User data:", userStr);
     if (userStr) {
       return JSON.parse(userStr);
     }
