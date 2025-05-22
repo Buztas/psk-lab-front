@@ -1,3 +1,5 @@
+import { jwtDecode } from 'jwt-decode';
+
 const API_URL = 'http://localhost:8080';
 
 export const authService = {
@@ -23,10 +25,12 @@ export const authService = {
       }
 
       const data = await response.json();
-      
+      const decodedData = jwtDecode(data.token);
+
       localStorage.setItem('token', data.token);
       
       const user = {
+        id: decodedData?.id,
         email: email,
         role: data.userResponse?.roleType || 'CUSTOMER'
       };

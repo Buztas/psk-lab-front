@@ -94,8 +94,9 @@ export default function CartPage() {
       }))
       
       const orderRequest = {
+        userId: user?.id,
         items: orderItems
-      }
+      };
       
       const createdOrder = await orderService.createOrder(orderRequest)
       
