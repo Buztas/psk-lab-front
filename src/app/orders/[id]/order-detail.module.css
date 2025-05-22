@@ -1,0 +1,362 @@
+.container {
+  min-height: 100vh;
+  background-color: #fff8f0;
+}
+
+.activeNavButton {
+  background-color: #8b4513;
+  color: white;
+}
+
+.contentContainer {
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: #666;
+  min-height: 50vh;
+  width: 100%;
+  max-width: 800px;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #8b4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+  background-color: #ffeaea;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.errorTitle {
+  color: #e53935;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.errorMessage {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #8b4513;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+.orderContainer {
+  width: 100%;
+  max-width: 800px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.orderInfo {
+  flex-grow: 1;
+}
+
+.orderIdSection {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.orderIdLabel {
+  color: #666;
+  margin-right: 0.5rem;
+}
+
+.orderId {
+  font-family: monospace;
+  color: #333;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.orderDates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dateInfo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.dateLabel {
+  color: #666;
+  width: 80px;
+}
+
+.dateValue {
+  color: #333;
+}
+
+.orderStatus {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  margin-left: 1rem;
+}
+
+.statusPending {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.statusReady {
+  background-color: #e0f7fa;
+  color: #00acc1;
+}
+
+.statusCollected {
+  background-color: #e8f5e9;
+  color: #43a047;
+}
+
+.orderItems {
+  margin-bottom: 2rem;
+}
+
+.sectionTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.itemsList {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.orderItem {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.orderItem:last-child {
+  border-bottom: none;
+}
+
+.itemMainInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.itemName {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  flex-grow: 1;
+}
+
+.itemQuantity {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0 1rem;
+}
+
+.itemPrice {
+  font-weight: 600;
+  color: #8b4513;
+  font-size: 1.05rem;
+}
+
+.variationsContainer {
+  background-color: #f9f9f9;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.variationsTitle {
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.variationsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.variation {
+  background-color: #f0e6dd;
+  color: #8b4513;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.orderTotal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 0;
+  border-top: 2px solid #eee;
+  margin-bottom: 1.5rem;
+}
+
+.totalLabel {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-right: 1rem;
+}
+
+.totalAmount {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #8b4513;
+}
+
+.statusMessage {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1.5rem;
+}
+
+.pendingIcon,
+.readyIcon,
+.collectedIcon {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.messageText {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.pickupTime {
+  font-weight: 500;
+  color: #333;
+}
+
+.statusPending + .statusMessage {
+  background-color: #fff3e0;
+}
+
+.statusReady + .statusMessage {
+  background-color: #e0f7fa;
+}
+
+.statusCollected + .statusMessage {
+  background-color: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+  .orderHeader {
+    flex-direction: column;
+  }
+  
+  .orderStatus {
+    margin: 1rem 0 0 0;
+    align-self: flex-start;
+  }
+  
+  .itemMainInfo {
+    flex-wrap: wrap;
+  }
+  
+  .itemName {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .itemQuantity {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .contentContainer {
+    padding: 1rem 0.5rem;
+  }
+  
+  .orderContainer {
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  
+  .pageTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .variationsList {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .variation {
+    width: fit-content;
+  }
+}

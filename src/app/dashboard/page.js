@@ -6,6 +6,8 @@ import styles from "./dashboard.module.css"
 import { authService } from "../../services/authService"
 import { menuService } from "../../services/menuService"
 import AdminPage from "../admin/page"
+import { updateCartCount } from "../../utils/cartUtils"
+import Navbar from "../../components/Navbar.js"
 
 export default function DashboardPage() {
   const [menuItems, setMenuItems] = useState([])
@@ -27,6 +29,8 @@ export default function DashboardPage() {
         console.log("User data: ", currentUser);
         setUser(currentUser)
         
+        updateCartCount(setCartCount)
+        
         setLoading(true)
         const menuData = await menuService.getAllMenuItems()
         setMenuItems(menuData.content || [])
@@ -39,6 +43,15 @@ export default function DashboardPage() {
     }
     
     checkAuth()
+    
+    const handleCartUpdate = () => {
+      updateCartCount(setCartCount)
+    }
+    
+    window.addEventListener('cartUpdated', handleCartUpdate)
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate)
+    }
   }, [router])
 
   const navigateToMenuItem = (menuItemId) => {
@@ -80,6 +93,64 @@ export default function DashboardPage() {
                 <button onClick={handleLogout} className={styles.logoutButton}>
                   Logout
                 </button>
+      <Navbar 
+        activePage="dashboard"
+        cartCount={cartCount}
+        user={user}
+        onLogout={handleLogout}
+      />
+
+      <div className={styles.menuContainer}>
+        {loading ? (
+          <div className={styles.loadingContainer}>
+            <div className={styles.loadingSpinner}></div>
+            <p>Loading menu items...</p>
+          </div>
+        ) : error ? (
+          <div className={styles.errorContainer}>
+            <p className={styles.errorMessage}>{error}</p>
+            <button 
+              className={styles.retryButton}
+              onClick={() => window.location.reload()}
+            >
+              Retry
+            </button>
+          </div>
+        ) : menuItems.length === 0 ? (
+          <div className={styles.emptyContainer}>
+            <p>No menu items available.</p>
+          </div>
+        ) : (
+          <div className={styles.menuGrid}>
+            {menuItems.map((menuItem) => (
+              <div
+                key={menuItem.id}
+                className={styles.menuItemCard}
+                onClick={() => navigateToMenuItem(menuItem.id)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className={styles.menuItemType}>
+                  {getItemTypeLabel(menuItem.type)}
+                </div>
+                <h3 className={styles.menuItemName}>{menuItem.name}</h3>
+                <p className={styles.menuItemDescription}>
+                  {menuItem.description.length > 100 
+                    ? menuItem.description.substring(0, 100) + "..." 
+                    : menuItem.description}
+                </p>
+                <div className={styles.menuItemInfo}>
+                  <div className={styles.menuItemPrice}>
+                    {Number(menuItem.price).toFixed(2)} eur
+                  </div>
+                  <div className={styles.menuItemStock}>
+                    {menuItem.stock > 0 ? `In stock: ${menuItem.stock}` : "Out of stock"}
+                  </div>
+                </div>
+                {menuItem.variations && menuItem.variations.length > 0 && (
+                  <div className={styles.variationsLabel}>
+                    {menuItem.variations.length} variations available
+                  </div>
+                )}
               </div>
             </div>
           </nav>
