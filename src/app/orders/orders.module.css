@@ -48,6 +48,20 @@
   color: #666;
 }
 
+.backButton {
+  color: #8b4513;
+  border: 1px solid #8b4513;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.backButton:hover {
+  background-color: #f3f3f3;
+}
+
 .loadingSpinner {
   width: 40px;
   height: 40px;

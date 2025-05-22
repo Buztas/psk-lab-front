@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import adminUserService from '../../server_functions/adminUserService';
+import { useEffect, useState } from "react";
+import adminUserService from "../../server_functions/adminUserService";
 import styles from "./user.module.css";
-import { useRouter } from 'next/navigation';
-import authService from '@/services/authService';
-import AdminNavbar from '../AdminNavbar';
+import { useRouter } from "next/navigation";
+import authService from "@/services/authService";
+import AdminNavbar from "../AdminNavbar";
 
 export default function UserPage() {
   const [users, setUsers] = useState([]);
@@ -13,7 +13,7 @@ export default function UserPage() {
   const [loading, setLoading] = useState(true); // General loading
   const [authLoading, setAuthLoading] = useState(true); // Auth check loading
   const [error, setError] = useState(null);
-  const [form, setForm] = useState({ email: '', roleType: '' });
+  const [form, setForm] = useState({ email: "", roleType: "" });
   const [userData, setUserData] = useState(null);
 
   const router = useRouter();
@@ -22,16 +22,16 @@ export default function UserPage() {
     const checkAuth = () => {
       if (typeof window === "undefined") return;
 
-    if (!authService.isAuthenticated()) {
-      router.push("/");
-      return;
-    }
+      if (!authService.isAuthenticated()) {
+        router.push("/");
+        return;
+      }
 
-    const currentUser = authService.getCurrentUser();
-    if (currentUser.role !== "ADMIN") {
-      router.push("/");
-      return;
-    }
+      const currentUser = authService.getCurrentUser();
+      if (currentUser.role !== "ADMIN") {
+        router.push("/dashboard");
+        return;
+      }
 
       setUserData(currentUser);
       setAuthLoading(false);
@@ -55,7 +55,7 @@ export default function UserPage() {
         : [];
       setUsers(validUsers);
     } catch (err) {
-      setError(err.message || 'Failed to load users');
+      setError(err.message || "Failed to load users");
     } finally {
       setLoading(false);
     }
@@ -66,19 +66,19 @@ export default function UserPage() {
     setSelectedUser(user);
     setForm({
       email: user.email,
-      roleType: user.roleType || ''
+      roleType: user.roleType || "",
     });
   };
 
   const handleDelete = async (id) => {
     if (!id) return;
-    if (confirm('Are you sure you want to delete this user?')) {
+    if (confirm("Are you sure you want to delete this user?")) {
       try {
         await adminUserService.deleteUser(id);
         loadUsers();
         setSelectedUser(null);
       } catch (err) {
-        alert('Failed to delete user');
+        alert("Failed to delete user");
       }
     }
   };
@@ -90,24 +90,25 @@ export default function UserPage() {
     try {
       await adminUserService.updateUser(selectedUser.id, {
         email: form.email,
-        roleType: form.roleType
+        roleType: form.roleType,
       });
       loadUsers();
       setSelectedUser(null);
     } catch (err) {
-      alert('Failed to update user');
+      alert("Failed to update user");
     }
   };
 
   // Wait until auth check completes
-  if (authLoading) return <div className={styles.loading}>Checking permissions...</div>;
+  if (authLoading)
+    return <div className={styles.loading}>Checking permissions...</div>;
 
   if (loading) return <div className={styles.loading}>Loading users...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
   return (
     <>
-      <AdminNavbar activeTab={"users"}/>
+      <AdminNavbar activeTab={"users"} />
       <h1 className={styles.title}>User Management</h1>
 
       {selectedUser && (
@@ -141,7 +142,9 @@ export default function UserPage() {
           </label>
 
           <div className={styles.buttonGroup}>
-            <button type="submit" className={styles.saveButton}>Save</button>
+            <button type="submit" className={styles.saveButton}>
+              Save
+            </button>
             <button
               type="button"
               className={styles.cancelButton}
@@ -154,20 +157,32 @@ export default function UserPage() {
       )}
 
       <div className={styles.userList}>
-        {users.map((user) => (
-          user?.id && (
-            <div key={user.id} className={styles.userCard}>
-              <div>
-                <strong>{user.roleType}</strong><br />
-                <span className={styles.email}>{user.email}</span>
+        {users.map(
+          (user) =>
+            user?.id && (
+              <div key={user.id} className={styles.userCard}>
+                <div>
+                  <strong>{user.roleType}</strong>
+                  <br />
+                  <span className={styles.email}>{user.email}</span>
+                </div>
+                <div className={styles.cardActions}>
+                  <button
+                    className={styles.editButton}
+                    onClick={() => handleEditClick(user)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className={styles.deleteButton}
+                    onClick={() => handleDelete(user.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-              <div className={styles.cardActions}>
-                <button className={styles.editButton} onClick={() => handleEditClick(user)}>Edit</button>
-                <button className={styles.deleteButton} onClick={() => handleDelete(user.id)}>Delete</button>
-              </div>
-            </div>
-          )
-        ))}
+            ),
+        )}
       </div>
     </>
   );

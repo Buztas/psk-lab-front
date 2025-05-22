@@ -23,7 +23,7 @@ export default function MenuPage() {
 
         const currentUser = authService.getCurrentUser()
         if (currentUser.role !== "ADMIN") {
-          router.push("/")
+          router.push("/dashboard")
           return
         }
 

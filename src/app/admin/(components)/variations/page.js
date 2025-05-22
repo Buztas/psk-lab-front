@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { variationsService } from "@/services/variationsService";
 import AdminNavbar from "../AdminNavbar";
 import styles from "./../menu/menu.module.css";
+import authService from "@/services/authService";
 
 export default function VariationsPage() {
   const [variations, setVariations] = useState([]);
@@ -20,7 +21,7 @@ export default function VariationsPage() {
 
     const currentUser = authService.getCurrentUser();
     if (currentUser.role !== "ADMIN") {
-      router.push("/");
+      router.push("/dashboard");
       return;
     }
     const loadVariations = async () => {
@@ -59,7 +60,7 @@ export default function VariationsPage() {
       <AdminNavbar activeTab="variations" />
 
       <div className={styles.detailContainer}>
-        <div className={styles.itemDetail}>
+        <div className={styles.itemDetail} style={{ maxWidth: "900px", width: "100%" }}>
           <h2 className={styles.menuItemName}>Manage Variations</h2>
 
           <button
@@ -77,8 +78,12 @@ export default function VariationsPage() {
           ) : (
             <div className={styles.menuAdminList}>
               {variations.map((variation) => (
-                <div key={variation.id} className={styles.menuAdminCard}>
-                  <div>
+                <div key={variation.id} className={styles.menuAdminCard} style={{
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                  padding: "1.5rem",
+                  borderRadius: "10px"
+                }}>
+                  <div style={{ flex: 1 }}>
                     <div className={styles.menuItemName}>{variation.name}</div>
                     <div className={styles.menuItemDescription}>
                       {variation.description}
@@ -88,18 +93,20 @@ export default function VariationsPage() {
                     </div>
                   </div>
 
-                  <div className={styles.menuAdminActions}>
+                  <div className={styles.menuAdminActions} style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
                     <button
-                      className={`${styles.viewButton}`}
+                      className={styles.viewButton}
+                      style={{ width: "100%", cursor: "pointer" }}
                       onClick={() => handleEdit(variation.id)}
                     >
-                      Edit
+                      ✏️ Edit
                     </button>
                     <button
-                      className={`${styles.backButton}`}
+                      className={styles.backButton}
+                      style={{ width: "100%" }}
                       onClick={() => handleDelete(variation.id)}
                     >
-                      Delete
+                      🗑️ Delete
                     </button>
                   </div>
                 </div>

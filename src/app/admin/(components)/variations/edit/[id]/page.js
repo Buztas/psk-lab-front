@@ -32,7 +32,7 @@ export default function ItemVariationPage() {
 
       const currentUser = authService.getCurrentUser();
       if (currentUser.role !== "ADMIN") {
-        router.push("/");
+        router.push("/dashboard");
         return;
       }
 

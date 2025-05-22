@@ -3,17 +3,19 @@
      background-color: #fff8f0;
 }
  .detailContainer {
-     padding: 1rem;
+     padding: 2rem;
      display: flex;
      justify-content: center;
+     max-width: 1200px;
+     margin: 0 auto;
 }
  .itemDetail {
      background-color: white;
-     border-radius: 8px;
-     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-     padding: 1.5rem;
+     border-radius: 12px;
+     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+     padding: 2rem;
      width: 100%;
-     max-width: 500px;
+     max-width: 800px;
      display: flex;
      flex-direction: column;
      align-items: center;
@@ -186,18 +188,15 @@
      overflow: hidden;
      width: fit-content;
 }
-.quantityInput,
-:global(textarea),
-:global(input[type="text"]),
-:global(input[type="number"]) {
-  width: 100%;
-  padding: 0.65rem 0.85rem;
-  font-size: 0.95rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #fff;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
-  transition: border 0.2s ease;
+ .quantityInput, :global(textarea), :global(input[type="text"]), :global(input[type="number"]) {
+     width: 100%;
+     padding: 0.75rem 1rem;
+     font-size: 1rem;
+     border: 1px solid #ddd;
+     border-radius: 6px;
+     background-color: #fff;
+     box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+     transition: border 0.2s ease;
 }
  .quantityInput:focus, textarea:focus, input:focus {
      outline: none;
@@ -364,6 +363,73 @@
  .menuAdminActions .backButton:hover {
      background-color: #f0eae4;
 }
+ .variationsContainer {
+     max-width: 900px;
+     margin: 2rem auto;
+     background-color: #fffaf5;
+     border-radius: 12px;
+     padding: 2rem;
+     box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+}
+ .variationCard {
+     background-color: #fffdfc;
+     border: 1px solid #e8ddd3;
+     border-radius: 10px;
+     padding: 1.5rem;
+     box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+     transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+ .variationCard:hover {
+     box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+     transform: translateY(-2px);
+}
+ .variationTitle {
+     font-size: 1.25rem;
+     font-weight: 700;
+     color: #3a2a1a;
+     margin-bottom: 0.25rem;
+}
+ .variationDescription {
+     font-size: 0.95rem;
+     color: #666;
+     margin-bottom: 1rem;
+}
+ .variationPriceStock {
+     font-size: 1rem;
+     color: #8b4513;
+     font-weight: 600;
+     border-top: 1px solid #eee;
+     padding-top: 0.75rem;
+}
+ .buttonGroup {
+     display: flex;
+     gap: 0.5rem;
+     margin-top: 0.5rem;
+}
+ .variationBtn {
+     padding: 0.5rem 1rem;
+     border-radius: 6px;
+     font-weight: 600;
+     font-size: 0.9rem;
+     cursor: pointer;
+     transition: background-color 0.2s;
+}
+ .variationBtn.edit {
+     background-color: #8b4513;
+     color: white;
+     border: none;
+}
+ .variationBtn.edit:hover {
+     background-color: #6a340f;
+}
+ .variationBtn.delete {
+     background-color: #f9f4f1;
+     color: #8b4513;
+     border: 1px solid #ddd;
+}
+ .variationBtn.delete:hover {
+     background-color: #f2e6de;
+}
  @media (max-width: 768px) {
      .itemDetail {
          padding: 1rem;
@@ -408,3 +474,4 @@
          font-size: 0.9rem;
     }
 }
+ 

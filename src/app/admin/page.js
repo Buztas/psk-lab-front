@@ -22,8 +22,8 @@ export default function AdminPage() {
 
         const currentUser = authService.getCurrentUser();
         if (currentUser.role !== "ADMIN") {
-          router.push("/");
-          return;
+            router.push("/dashboard");
+            return;
         }
         setUser(userData);
       } catch (err) {
