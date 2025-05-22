@@ -29,10 +29,15 @@ export default function EditMenuItemPage() {
   useEffect(() => {
     const loadItem = async () => {
       try {
-        const currentUser = authService.getCurrentUser();
-        if (!currentUser || currentUser.role !== "ADMIN") {
-          router.push("/");
-          return;
+        if (!authService.isAuthenticated()) {
+          router.push("/")
+          return
+        }
+
+        const currentUser = authService.getCurrentUser()
+        if (currentUser.role !== "ADMIN") {
+          router.push("/")
+          return
         }
         const item = await menuService.getMenuItemById(id);
         setForm({

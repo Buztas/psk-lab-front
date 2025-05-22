@@ -20,13 +20,18 @@ export default function UserPage() {
 
   useEffect(() => {
     const checkAuth = () => {
-      if (typeof window === "undefined") return; // Skip SSR
+      if (typeof window === "undefined") return;
 
-      const currentUser = authService.getCurrentUser();
-      if (!authService.isAuthenticated() || currentUser?.role !== 'ADMIN') {
-        router.push('/');
-        return;
-      }
+    if (!authService.isAuthenticated()) {
+      router.push("/");
+      return;
+    }
+
+    const currentUser = authService.getCurrentUser();
+    if (currentUser.role !== "ADMIN") {
+      router.push("/");
+      return;
+    }
 
       setUserData(currentUser);
       setAuthLoading(false);

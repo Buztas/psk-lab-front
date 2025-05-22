@@ -6,6 +6,8 @@ import styles from "./../menu.module.css";
 import AdminNavbar from "../../AdminNavbar";
 import adminMenuService from "@/services/data_manipulation_services/adminMenuService";
 import authService from "@/services/authService";
+import { variationsService } from "@/services/variationsService";
+import { useEffect } from "react";
 
 export default function CreateMenuItemPage() {
   const router = useRouter();
@@ -17,6 +19,31 @@ export default function CreateMenuItemPage() {
     stock: "",
   });
   const [variations, setVariations] = useState([]);
+  const [selectedVariationIds, setSelectedVariationIds] = useState([]);
+
+  useEffect(() => {
+    if (!authService.isAuthenticated()) {
+      router.push("/");
+      return;
+    }
+
+    const currentUser = authService.getCurrentUser();
+    if (currentUser.role !== "ADMIN") {
+      router.push("/");
+      return;
+    }
+    const loadVariations = async () => {
+      try {
+        const data = await variationsService.getItemVariations();
+        setVariations(data.content || []);
+      } catch (err) {
+        console.error("Failed fetching variations");
+      }
+    };
+
+    loadVariations();
+  }, [router]);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -54,11 +81,7 @@ export default function CreateMenuItemPage() {
         ...form,
         price: parseFloat(form.price),
         stock: parseInt(form.stock, 10),
-        variations: variations.map((v) => ({
-          name: v.name,
-          price: parseFloat(v.price),
-          stock: parseInt(v.stock, 10),
-        })),
+        variations: selectedVariationIds.map((id) => ({ id })),
       };
 
       await adminMenuService.createMenuItem(payload);
@@ -142,62 +165,27 @@ export default function CreateMenuItemPage() {
               <h3 className={styles.optionTitle}>Variations</h3>
 
               <div className={styles.checkboxGroup}>
-                {variations.map((variation, index) => (
-                  <div
-                    key={index}
-                    className={styles.selectedVariationsSection}
-                    style={{ gap: "0.75rem" }}
-                  >
+                {variations.map((variation) => (
+                  <label key={variation.id} className={styles.checkboxLabel}>
                     <input
-                      type="text"
-                      placeholder="Variation name"
-                      value={variation.name}
-                      onChange={(e) =>
-                        handleVariationChange(index, "name", e.target.value)
-                      }
-                      className={styles.quantityInput}
-                      required
+                      type="checkbox"
+                      className={styles.checkboxInput}
+                      checked={selectedVariationIds.includes(variation.id)}
+                      onChange={() => {
+                        setSelectedVariationIds((prev) =>
+                          prev.includes(variation.id)
+                            ? prev.filter((id) => id !== variation.id)
+                            : [...prev, variation.id],
+                        );
+                      }}
                     />
-                    <input
-                      type="number"
-                      placeholder="Price (EUR)"
-                      value={variation.price}
-                      onChange={(e) =>
-                        handleVariationChange(index, "price", e.target.value)
-                      }
-                      step="0.01"
-                      className={styles.quantityInput}
-                      required
-                    />
-                    <input
-                      type="number"
-                      placeholder="Stock"
-                      value={variation.stock}
-                      onChange={(e) =>
-                        handleVariationChange(index, "stock", e.target.value)
-                      }
-                      className={styles.quantityInput}
-                      required
-                    />
-                    <button
-                      type="button"
-                      className={styles.backButton}
-                      onClick={() => removeVariation(index)}
-                      style={{ marginTop: "0.5rem" }}
-                    >
-                      Remove
-                    </button>
-                  </div>
+                    <span className={styles.checkboxText}>
+                      {variation.name} – €{variation.price.toFixed(2)} – Stock:{" "}
+                      {variation.stock}
+                    </span>
+                  </label>
                 ))}
               </div>
-
-              <button
-                type="button"
-                className={styles.addToCartButton}
-                onClick={addVariation}
-              >
-                + Add Variation
-              </button>
             </div>
 
             <button

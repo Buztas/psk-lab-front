@@ -13,6 +13,16 @@ export default function VariationsPage() {
   const router = useRouter();
 
   useEffect(() => {
+    if (!authService.isAuthenticated()) {
+      router.push("/");
+      return;
+    }
+
+    const currentUser = authService.getCurrentUser();
+    if (currentUser.role !== "ADMIN") {
+      router.push("/");
+      return;
+    }
     const loadVariations = async () => {
       try {
         const result = await variationsService.getItemVariations();
@@ -70,7 +80,9 @@ export default function VariationsPage() {
                 <div key={variation.id} className={styles.menuAdminCard}>
                   <div>
                     <div className={styles.menuItemName}>{variation.name}</div>
-                    <div className={styles.menuItemDescription}>{variation.description}</div>
+                    <div className={styles.menuItemDescription}>
+                      {variation.description}
+                    </div>
                     <div className={styles.menuItemBasePrice}>
                       €{variation.price.toFixed(2)} | Stock: {variation.stock}
                     </div>

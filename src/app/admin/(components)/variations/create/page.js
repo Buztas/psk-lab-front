@@ -1,59 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import AdminNavbar from "../../../AdminNavbar";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import AdminNavbar from "../../AdminNavbar";
+import styles from "../../menu/menu.module.css";
 import { variationsService } from "@/services/variationsService";
-import styles from "./../../../menu/menu.module.css";
 import authService from "@/services/authService";
 
-export default function ItemVariationPage() {
+export default function ItemVariationCreatePage() {
   const router = useRouter();
-  const params = useParams();
-  const id = params.id;
-
   const [form, setForm] = useState({
     name: "",
     description: "",
     price: "",
     stock: "",
-    version: 0,
   });
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
   useEffect(() => {
-    const loadVariation = async () => {
-      if (!authService.isAuthenticated()) {
-        router.push("/");
-        return;
-      }
+    if (!authService.isAuthenticated()) {
+      router.push("/");
+      return;
+    }
 
-      const currentUser = authService.getCurrentUser();
-      if (currentUser.role !== "ADMIN") {
-        router.push("/");
-        return;
-      }
+    const currentUser = authService.getCurrentUser();
+    if (currentUser.role !== "ADMIN") {
+      router.push("/");
+      return;
+    }
+  }, [router]);
 
-      try {
-        const data = await variationsService.getItemVariationById(id);
-        setForm({
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          stock: data.stock,
-          version: data.version,
-        });
-      } catch (err) {
-        setError("Failed to load variation.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (id) loadVariation();
-  }, [id]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -62,9 +39,10 @@ export default function ItemVariationPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
-      await variationsService.updateItemVariation(id, {
+      await variationsService.createItemVariation({
         ...form,
         price: parseFloat(form.price),
         stock: parseInt(form.stock, 10),
@@ -72,13 +50,11 @@ export default function ItemVariationPage() {
       router.push("/admin/variations");
     } catch (err) {
       console.error(err);
-      setError("Failed to update variation. Please check all fields.");
+      setError("Failed to create variation. Please check all fields.");
+    } finally {
+      setLoading(false);
     }
   };
-
-  if (loading) {
-    return <div className={styles.loadingContainer}>Loading...</div>;
-  }
 
   return (
     <div className={styles.container}>
@@ -86,7 +62,7 @@ export default function ItemVariationPage() {
 
       <div className={styles.detailContainer}>
         <div className={styles.itemDetail}>
-          <h2 className={styles.menuItemName}>Edit Variation</h2>
+          <h2 className={styles.menuItemName}>Create New Variation</h2>
 
           {error && <div className={styles.errorMessage}>{error}</div>}
 
@@ -133,9 +109,14 @@ export default function ItemVariationPage() {
               className={styles.quantityInput}
             />
 
-            <button type="submit" className={styles.addToCartButton}>
-              Save Changes
+            <button
+              type="submit"
+              className={styles.addToCartButton}
+              disabled={loading}
+            >
+              {loading ? "Creating..." : "Create Variation"}
             </button>
+
             <button
               type="button"
               className={styles.backButton}

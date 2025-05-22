@@ -1,38 +1,43 @@
 "use client";
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import AdminNavbar from "./(components)/AdminNavbar";
 import authService from "@/services/authService";
 
 export default function AdminPage() {
-    const router = useRouter();
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(null)
-    const userData = authService.getCurrentUser()
+  const router = useRouter();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const userData = authService.getCurrentUser();
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                if(!authService.isAuthenticated() && userData.role !== 'ADMIN') {
-                    router.push('/')
-                    return
-                }
-
-                setUser(userData);
-            } catch (err) {
-                console.error("Failed checking auth: ", err);
-                setError("Failed authenticating admin user.");
-                setLoading(false);
-            }
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        if (!authService.isAuthenticated()) {
+          router.push("/");
+          return;
         }
-        checkAuth();
-    }, [router])
 
-    return(
-        <>
-            <AdminNavbar user={user} activeTab={"dashboard"}/>
-        </>
-    )
+        const currentUser = authService.getCurrentUser();
+        if (currentUser.role !== "ADMIN") {
+          router.push("/");
+          return;
+        }
+        setUser(userData);
+      } catch (err) {
+        console.error("Failed checking auth: ", err);
+        setError("Failed authenticating admin user.");
+        setLoading(false);
+      }
+    };
+    checkAuth();
+  }, [router]);
+
+  return (
+    <>
+      <AdminNavbar user={user} activeTab={"dashboard"} />
+    </>
+  );
 }
