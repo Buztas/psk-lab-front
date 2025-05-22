@@ -363,6 +363,32 @@
   background-color: #6a340f;
 }
 
+.menuAdminList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menuAdminCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #fff;
+  border: 1px solid #eee;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+.menuAdminActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menuAdminActions button {
+  width: 80px;
+}
+
 @media (max-width: 768px) {
   .itemDetail {
     padding: 1rem;

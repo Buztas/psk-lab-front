@@ -1,19 +1,19 @@
-import { useRouter } from "next/navigation"
-import styles from "./admin-navbar.module.css"
-import authService from "@/services/authService"
+import { useRouter } from "next/navigation";
+import styles from "./admin-navbar.module.css";
+import authService from "@/services/authService";
 
-export default function AdminNavbar({activeTab}) {
+export default function AdminNavbar({ activeTab }) {
   const router = useRouter();
   const userData = authService.getCurrentUser();
 
   const handleNavigation = (path) => {
-    router.push(`${path}`)
-  }
+    router.push(`${path}`);
+  };
 
   const handleLogout = () => {
-    authService.logout()
-    router.push("/")
-  }
+    authService.logout();
+    router.push("/");
+  };
 
   return (
     <nav className={styles.navbar}>
@@ -47,12 +47,12 @@ export default function AdminNavbar({activeTab}) {
         >
           Users
         </button>
-        {/* <button
-          className={`${styles.navButton} ${activeTab === "settings" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/admin/settings")}
+        <button
+          className={`${styles.navButton} ${activeTab === "variations" ? styles.activeNavButton : ""}`}
+          onClick={() => handleNavigation("/admin/variations")}
         >
-          Settings
-        </button> */}
+          Variations
+        </button>
 
         <div className={styles.userInfo}>
           {userData && (
@@ -67,5 +67,5 @@ export default function AdminNavbar({activeTab}) {
         </div>
       </div>
     </nav>
-  )
+  );
 }

@@ -85,6 +85,8 @@ export const menuService = {
           'Content-Type': 'application/json',
         },
       });
+      
+      console.log("Fetched menu item: ", response);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
