@@ -6,6 +6,7 @@ import styles from "./cart.module.css"
 import navStyles from "../dashboard/dashboard.module.css"
 import { authService } from "../../services/authService"
 import { orderService } from "../../services/orderService"
+import Navbar from "../../components/Navbar.js"
 import { 
   getCartItems, 
   removeCartItem, 
@@ -123,31 +124,12 @@ export default function CartPage() {
 
   return (
     <div className={styles.container}>
-      <nav className={navStyles.navbar}>
-        <div className={navStyles.logo}>
-          <span className={navStyles.logoIcon}>☕</span>
-          <h1 className={navStyles.logoText}>Kavapp</h1>
-        </div>
-        <div className={navStyles.navButtons}>
-          <button 
-            className={navStyles.navButton} 
-            onClick={() => router.push("/dashboard")}
-          >
-            Menu
-          </button>
-          <button 
-            className={`${navStyles.navButton} ${styles.activeNavButton}`}
-          >
-            Cart {cartCount > 0 && <span className={navStyles.badge}>{cartCount}</span>}
-          </button>
-          <div className={navStyles.userInfo}>
-            {user && <span className={navStyles.userEmail}>{user.email}</span>}
-            <button onClick={handleLogout} className={navStyles.logoutButton}>
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar 
+        activePage="cart"
+        cartCount={cartCount}
+        user={user}
+        onLogout={handleLogout}
+      />
 
       <div className={styles.cartContainer}>
         <div className={styles.cartContent}>

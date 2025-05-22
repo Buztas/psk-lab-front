@@ -7,6 +7,7 @@ import styles from "./menu-item.module.css"
 import navStyles from "../../dashboard/dashboard.module.css"
 import { authService } from "../../../services/authService"
 import { menuService } from "../../../services/menuService"
+import Navbar from "../../../components/Navbar.js"
 import { 
   getCartCount, 
   getCartItems,
@@ -170,26 +171,12 @@ export default function ItemDetailPage({ params }) {
   if (loading) {
     return (
       <div className={styles.container}>
-        <nav className={navStyles.navbar}>
-          <div className={navStyles.logo}>
-            <span className={navStyles.logoIcon}>☕</span>
-            <h1 className={navStyles.logoText}>Kavapp</h1>
-          </div>
-          <div className={navStyles.navButtons}>
-            <button className={navStyles.navButton} onClick={() => router.push("/dashboard")}>
-              Menu
-            </button>
-            <button className={navStyles.navButton} onClick={() => router.push("/cart")}>
-              Cart {cartCount > 0 && <span className={navStyles.badge}>{cartCount}</span>}
-            </button>
-            <div className={navStyles.userInfo}>
-              {user && <span className={navStyles.userEmail}>{user.email}</span>}
-              <button onClick={handleLogout} className={navStyles.logoutButton}>
-                Logout
-              </button>
-            </div>
-          </div>
-        </nav>
+        <Navbar 
+          activePage="menu-item"
+          cartCount={cartCount}
+          user={user}
+          onLogout={handleLogout}
+        />
         
         <div className={styles.loadingContainer}>
           <div className={styles.loadingSpinner}></div>
@@ -320,7 +307,6 @@ export default function ItemDetailPage({ params }) {
               </div>
             )}
 
-            {/* Selected variations summary */}
             {selectedVariations.length > 0 && (
               <div className={styles.selectedVariationsSection}>
                 <h3 className={styles.optionTitle}>Selected variations:</h3>
@@ -335,7 +321,6 @@ export default function ItemDetailPage({ params }) {
               </div>
             )}
 
-            {/* Quantity controls */}
             <div className={styles.quantitySection}>
               <h3 className={styles.optionTitle}>Quantity:</h3>
               <div className={styles.quantityControl}>

@@ -59,6 +59,7 @@ export const orderService = {
     }
   },
   
+
   getAllOrders: async (page = 0, size = 20, sort = "orderDate,desc") => {
     try {
       const token = localStorage.getItem('token');
@@ -85,6 +86,36 @@ export const orderService = {
       return await response.json();
     } catch (error) {
       console.error('Error getting orders:', error);
+      throw error;
+    }
+  },
+  
+  getMyOrders: async (page = 0, size = 10, sort = "orderDate,desc") => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+      
+      const url = `${API_URL}/api/orders/my-orders?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`;
+      
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: 'Failed to get my orders'
+        }));
+        throw new Error(errorData.message || `Error getting my orders: ${response.status}`);
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error getting my orders:', error);
       throw error;
     }
   },
