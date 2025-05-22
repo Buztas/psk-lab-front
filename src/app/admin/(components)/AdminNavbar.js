@@ -1,17 +1,13 @@
-"use client"
-
-import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import styles from "./admin-navbar.module.css"
 import authService from "@/services/authService"
 
-export default function AdminNavbar({user}) {
-  const [activeTab, setActiveTab] = useState("dashboard")
+export default function AdminNavbar({activeTab}) {
   const router = useRouter();
+  const userData = authService.getCurrentUser();
 
   const handleNavigation = (path) => {
-    setActiveTab(path)
-    router.push(`/admin/${path}`)
+    router.push(`${path}`)
   }
 
   const handleLogout = () => {
@@ -29,39 +25,39 @@ export default function AdminNavbar({user}) {
       <div className={styles.navButtons}>
         <button
           className={`${styles.navButton} ${activeTab === "dashboard" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("dashboard")}
+          onClick={() => handleNavigation("/dashboard")}
         >
           Dashboard
         </button>
         <button
           className={`${styles.navButton} ${activeTab === "menu" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("menu")}
+          onClick={() => handleNavigation("/admin/menu")}
         >
           Menu Items
         </button>
         <button
           className={`${styles.navButton} ${activeTab === "orders" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("orders")}
+          onClick={() => handleNavigation("/admin/orders")}
         >
           Orders
         </button>
         <button
-          className={`${styles.navButton} ${activeTab === "user" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("user")}
+          className={`${styles.navButton} ${activeTab === "users" ? styles.activeNavButton : ""}`}
+          onClick={() => handleNavigation("/admin/users")}
         >
           Users
         </button>
-        <button
+        {/* <button
           className={`${styles.navButton} ${activeTab === "settings" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("settings")}
+          onClick={() => handleNavigation("/admin/settings")}
         >
           Settings
-        </button>
+        </button> */}
 
         <div className={styles.userInfo}>
-          {user && (
+          {userData && (
             <span className={styles.userEmail}>
-              {user.email}
+              {userData.email}
               <span className={styles.adminBadge}>Admin</span>
             </span>
           )}

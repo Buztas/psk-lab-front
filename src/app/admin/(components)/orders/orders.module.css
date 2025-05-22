@@ -1,0 +1,64 @@
+/* --- Admin-specific styles --- */
+
+.userCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-bottom: 1rem;
+}
+
+.userCard:hover {
+  background-color: #f9f9f9;
+}
+
+.userCardExpanded {
+  background-color: #f4f4f4;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.userEmail {
+  font-weight: 600;
+  color: #333;
+}
+
+.userRole {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.expandIcon {
+  font-size: 1.25rem;
+  color: #8b4513;
+  transition: transform 0.2s ease;
+}
+
+.expandIcon.rotate {
+  transform: rotate(90deg);
+}
+
+/* Optional animation for expansion */
+.expandableOrders {
+  overflow: hidden;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

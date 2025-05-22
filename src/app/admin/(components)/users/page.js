@@ -5,50 +5,59 @@ import adminUserService from '../../server_functions/adminUserService';
 import styles from "./user.module.css";
 import { useRouter } from 'next/navigation';
 import authService from '@/services/authService';
+import AdminNavbar from '../AdminNavbar';
 
 export default function UserPage() {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // General loading
+  const [authLoading, setAuthLoading] = useState(true); // Auth check loading
   const [error, setError] = useState(null);
   const [form, setForm] = useState({ email: '', roleType: '' });
-  const userData = authService.getCurrentUser()
-  
+  const [userData, setUserData] = useState(null);
+
   const router = useRouter();
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                if(!authService.isAuthenticated() && userData?.role !== 'ADMIN') {
-                    router.push('/')
-                    return
-                }
-            } catch (err) {
-                console.error("Failed checking auth: ", err);
-                setError("Failed authenticating admin user.");
-                setLoading(false);
-            }
-        }
-        checkAuth();
-    }, [router])
+  useEffect(() => {
+    const checkAuth = () => {
+      if (typeof window === "undefined") return; // Skip SSR
+
+      const currentUser = authService.getCurrentUser();
+      if (!authService.isAuthenticated() || currentUser?.role !== 'ADMIN') {
+        router.push('/');
+        return;
+      }
+
+      setUserData(currentUser);
+      setAuthLoading(false);
+    };
+
+    checkAuth();
+  }, [router]);
+
+  useEffect(() => {
+    if (!authLoading) {
+      loadUsers();
+    }
+  }, [authLoading]);
 
   const loadUsers = async () => {
     try {
       setLoading(true);
       const data = await adminUserService.getAllUsers();
-      setUsers(data);
-      setLoading(false);
+      const validUsers = Array.isArray(data)
+        ? data.filter((u) => u && u.id)
+        : [];
+      setUsers(validUsers);
     } catch (err) {
       setError(err.message || 'Failed to load users');
+    } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
   const handleEditClick = (user) => {
+    if (!user?.id) return;
     setSelectedUser(user);
     setForm({
       email: user.email,
@@ -57,6 +66,7 @@ export default function UserPage() {
   };
 
   const handleDelete = async (id) => {
+    if (!id) return;
     if (confirm('Are you sure you want to delete this user?')) {
       try {
         await adminUserService.deleteUser(id);
@@ -70,6 +80,8 @@ export default function UserPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!selectedUser?.id) return;
+
     try {
       await adminUserService.updateUser(selectedUser.id, {
         email: form.email,
@@ -82,11 +94,15 @@ export default function UserPage() {
     }
   };
 
+  // Wait until auth check completes
+  if (authLoading) return <div className={styles.loading}>Checking permissions...</div>;
+
   if (loading) return <div className={styles.loading}>Loading users...</div>;
   if (error) return <div className={styles.error}>{error}</div>;
 
   return (
-    <div className={styles.container}>
+    <>
+      <AdminNavbar activeTab={"users"}/>
       <h1 className={styles.title}>User Management</h1>
 
       {selectedUser && (
@@ -134,18 +150,20 @@ export default function UserPage() {
 
       <div className={styles.userList}>
         {users.map((user) => (
-          <div key={user.id} className={styles.userCard}>
-            <div>
-              <strong>{user.roleType}</strong><br />
-              <span className={styles.email}>{user.email}</span>
+          user?.id && (
+            <div key={user.id} className={styles.userCard}>
+              <div>
+                <strong>{user.roleType}</strong><br />
+                <span className={styles.email}>{user.email}</span>
+              </div>
+              <div className={styles.cardActions}>
+                <button className={styles.editButton} onClick={() => handleEditClick(user)}>Edit</button>
+                <button className={styles.deleteButton} onClick={() => handleDelete(user.id)}>Delete</button>
+              </div>
             </div>
-            <div className={styles.cardActions}>
-              <button className={styles.editButton} onClick={() => handleEditClick(user)}>Edit</button>
-              <button className={styles.deleteButton} onClick={() => handleDelete(user.id)}>Delete</button>
-            </div>
-          </div>
+          )
         ))}
       </div>
-    </div>
+    </>
   );
 }

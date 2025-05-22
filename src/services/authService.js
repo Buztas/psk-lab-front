@@ -84,7 +84,6 @@ export const authService = {
 
   getCurrentUser: () => {
     const userStr = localStorage.getItem('user');
-    console.log("User data:", userStr);
     if (userStr) {
       return JSON.parse(userStr);
     }

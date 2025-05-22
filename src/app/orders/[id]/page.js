@@ -6,7 +6,7 @@ import { use } from 'react'
 import styles from "./order-detail.module.css"
 import navStyles from "../../dashboard/dashboard.module.css"
 import { authService } from "../../../services/authService"
-import { orderService } from "../../../services/orderService"
+import { orderService } from "../../../services/orderService.js"
 import { updateCartCount } from "../../../utils/cartUtils"
 import Navbar from "../../../components/Navbar.js"
 

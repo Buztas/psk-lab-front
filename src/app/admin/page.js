@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdminNavbar from "./(components)/AdminNavbar";
@@ -18,8 +20,7 @@ export default function AdminPage() {
                     return
                 }
 
-                const currentUser = authService.getCurrentUser();
-                setUser(currentUser);
+                setUser(userData);
             } catch (err) {
                 console.error("Failed checking auth: ", err);
                 setError("Failed authenticating admin user.");
@@ -31,7 +32,7 @@ export default function AdminPage() {
 
     return(
         <>
-            <AdminNavbar user={user}/>
+            <AdminNavbar user={user} activeTab={"dashboard"}/>
         </>
     )
 }
