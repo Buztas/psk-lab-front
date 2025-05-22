@@ -82,6 +82,74 @@
   color: #333;
 }
 
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.checkboxLabel:hover {
+  background-color: #f9f5f1;
+}
+
+.checkboxInput {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.checkboxText {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.checkboxInput:checked + .checkboxText {
+  color: #8b4513;
+  font-weight: 500;
+}
+
+.checkboxLabel:has(.checkboxInput:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.selectedVariationsSection {
+  width: 100%;
+  background-color: #f9f5f1;
+  border: 1px solid #f0e6dd;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.selectedVariationsList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+
+.selectedVariationItem {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed #f0e6dd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.selectedVariationItem:last-child {
+  border-bottom: none;
+}
+
 .radioGroup {
   display: flex;
   flex-direction: column;
@@ -119,6 +187,13 @@
 
 .outOfStock {
   color: #e53935;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.lowStock {
+  color: #f57c00;
   font-weight: 500;
   margin-left: 0.5rem;
   font-size: 0.85rem;
@@ -233,7 +308,6 @@
   cursor: not-allowed;
 }
 
-/* Loading and error states */
 .loadingContainer {
   display: flex;
   flex-direction: column;
@@ -328,6 +402,7 @@
     font-size: 0.9rem;
   }
     
+  .checkboxText,
   .radioText {
     font-size: 0.85rem;
   }

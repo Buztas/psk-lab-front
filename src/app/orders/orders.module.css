@@ -1,0 +1,306 @@
+.container {
+  min-height: 100vh;
+  background-color: #fff8f0;
+}
+
+.activeNavButton {
+  background-color: #8b4513;
+  color: white;
+}
+
+.contentContainer {
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.ordersContainer {
+  width: 100%;
+  max-width: 1000px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.errorMessage {
+  background-color: #ffeaea;
+  color: #e53935;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #e53935;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0;
+  color: #666;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #8b4513;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.emptyOrdersContainer {
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+}
+
+.browseButton {
+  margin-top: 1rem;
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.browseButton:hover {
+  background-color: #724011;
+}
+
+.ordersList {
+  border: 1px solid #eee;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.ordersHeader {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 0.8fr 0.6fr 0.6fr 0.8fr;
+  background-color: #f8f8f8;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  font-weight: 600;
+  color: #555;
+}
+
+.orderIdHeader, 
+.dateHeader, 
+.statusHeader, 
+.totalHeader, 
+.itemsHeader, 
+.actionsHeader {
+  padding: 0 0.5rem;
+}
+
+.orderItem {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 0.8fr 0.6fr 0.6fr 0.8fr;
+  padding: 1rem;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.orderItem:last-child {
+  border-bottom: none;
+}
+
+.orderItem:hover {
+  background-color: #f9f9f9;
+}
+
+.orderId, 
+.orderDate, 
+.orderStatus, 
+.orderTotal, 
+.orderItems, 
+.orderActions {
+  padding: 0 0.5rem;
+}
+
+.orderId {
+  font-family: monospace;
+  color: #666;
+}
+
+.orderDate {
+  color: #555;
+}
+
+.orderStatus {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.statusPending {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.statusReady {
+  background-color: #e0f7fa;
+  color: #00acc1;
+}
+
+.statusCollected {
+  background-color: #e8f5e9;
+  color: #43a047;
+}
+
+.orderTotal {
+  font-weight: 600;
+  color: #8b4513;
+}
+
+.orderItems {
+  color: #666;
+}
+
+.viewButton {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.viewButton:hover {
+  background-color: #724011;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.pageButton {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pageButton:hover {
+  background-color: #724011;
+}
+
+.pageButton:disabled {
+  background-color: #d7ccc8;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  color: #666;
+}
+
+.totalInfo {
+  text-align: right;
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .ordersHeader {
+    display: none;
+  }
+  
+  .orderItem {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+    position: relative;
+  }
+  
+  .orderId, 
+  .orderDate, 
+  .orderStatus, 
+  .orderTotal, 
+  .orderItems, 
+  .orderActions {
+    padding: 0.25rem 0;
+    width: 100%;
+  }
+  
+  .orderId:before {
+    content: "Order ID: ";
+    font-weight: 600;
+  }
+  
+  .orderDate:before {
+    content: "Date: ";
+    font-weight: 600;
+  }
+  
+  .orderTotal:before {
+    content: "Total: ";
+    font-weight: 600;
+  }
+  
+  .orderItems:before {
+    content: "Items: ";
+    font-weight: 600;
+  }
+  
+  .orderStatus {
+    align-self: flex-start;
+  }
+  
+  .orderActions {
+    margin-top: 0.5rem;
+    text-align: right;
+  }
+}
+
+@media (max-width: 600px) {
+  .contentContainer {
+    padding: 1rem 0.5rem;
+  }
+  
+  .ordersContainer {
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  
+  .pageTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}

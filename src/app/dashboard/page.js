@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation"
 import styles from "./dashboard.module.css"
 import { authService } from "../../services/authService"
 import { menuService } from "../../services/menuService"
+import { updateCartCount } from "../../utils/cartUtils"
+import Navbar from "../../components/Navbar.js"
 
 export default function DashboardPage() {
   const [menuItems, setMenuItems] = useState([])
@@ -25,6 +27,8 @@ export default function DashboardPage() {
         const currentUser = authService.getCurrentUser()
         setUser(currentUser)
         
+        updateCartCount(setCartCount)
+        
         setLoading(true)
         const menuData = await menuService.getAllMenuItems()
         setMenuItems(menuData.content || [])
@@ -37,6 +41,15 @@ export default function DashboardPage() {
     }
     
     checkAuth()
+    
+    const handleCartUpdate = () => {
+      updateCartCount(setCartCount)
+    }
+    
+    window.addEventListener('cartUpdated', handleCartUpdate)
+    return () => {
+      window.removeEventListener('cartUpdated', handleCartUpdate)
+    }
   }, [router])
 
   const navigateToMenuItem = (menuItemId) => {
@@ -55,24 +68,12 @@ export default function DashboardPage() {
 
   return (
     <div className={styles.container}>
-      <nav className={styles.navbar}>
-        <div className={styles.logo}>
-          <span className={styles.logoIcon}>☕</span>
-          <h1 className={styles.logoText}>Kavapp</h1>
-        </div>
-        <div className={styles.navButtons}>
-          <button className={`${styles.navButton} ${styles.activeNavButton}`}>Menu</button>
-          <button className={styles.navButton} onClick={() => router.push("/cart")}>
-            Cart <span className={styles.badge}>{cartCount}</span>
-          </button>
-          <div className={styles.userInfo}>
-            {user && <span className={styles.userEmail}>{user.email}</span>}
-            <button onClick={handleLogout} className={styles.logoutButton}>
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <Navbar 
+        activePage="dashboard"
+        cartCount={cartCount}
+        user={user}
+        onLogout={handleLogout}
+      />
 
       <div className={styles.menuContainer}>
         {loading ? (
