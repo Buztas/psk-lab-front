@@ -77,7 +77,15 @@ export default function ItemVariationPage() {
   };
 
   if (loading) {
-    return <div className={styles.loadingContainer}>Loading...</div>;
+    return (
+      <div className={styles.container}>
+        <AdminNavbar activeTab="variations" />
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner}></div>
+          <p>Loading variation...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -91,59 +99,97 @@ export default function ItemVariationPage() {
           {error && <div className={styles.errorMessage}>{error}</div>}
 
           <form onSubmit={handleSubmit} className={styles.optionsContainer}>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Variation name"
-              required
-              className={styles.quantityInput}
-            />
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="name">
+                Variation Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Enter variation name"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
 
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Description"
-              rows={3}
-              required
-              className={styles.menuItemDescription}
-              style={{ resize: "vertical" }}
-            />
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="description">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                rows={3}
+                required
+                style={{ 
+                  resize: "vertical",
+                  width: "100%",
+                  padding: "0.65rem 0.85rem",
+                  fontSize: "0.95rem",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                  backgroundColor: "#fff",
+                  boxShadow: "inset 0 1px 2px rgba(0,0,0,0.02)",
+                  transition: "border 0.2s ease"
+                }}
+                onFocus={(e) => e.target.style.borderColor = "#8b4513"}
+                onBlur={(e) => e.target.style.borderColor = "#ddd"}
+              />
+            </div>
 
-            <input
-              type="number"
-              name="price"
-              value={form.price}
-              onChange={handleChange}
-              placeholder="Price (EUR)"
-              step="0.01"
-              required
-              className={styles.quantityInput}
-            />
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="price">
+                Price (EUR)
+              </label>
+              <input
+                id="price"
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
 
-            <input
-              type="number"
-              name="stock"
-              value={form.stock}
-              onChange={handleChange}
-              placeholder="Stock"
-              required
-              className={styles.quantityInput}
-            />
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="stock">
+                Stock Quantity
+              </label>
+              <input
+                id="stock"
+                type="number"
+                name="stock"
+                value={form.stock}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
 
-            <button type="submit" className={styles.addToCartButton}>
-              Save Changes
-            </button>
-            <button
-              type="button"
-              className={styles.backButton}
-              style={{ marginTop: "1rem" }}
-              onClick={() => router.push("/admin/variations")}
-            >
-              ← Back to Variations
-            </button>
+            <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexDirection: "column" }}>
+              <button type="submit" className={styles.addToCartButton}>
+                💾 Save Changes
+              </button>
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={() => router.push("/admin/variations")}
+              >
+                ← Back to Variations
+              </button>
+            </div>
           </form>
         </div>
       </div>

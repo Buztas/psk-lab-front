@@ -162,7 +162,7 @@ export default function AdminOrdersPage() {
                         🔎 View
                       </button>
                       <button
-                        className={styles.backButton}
+                        className={styles.deleteButton}
                         style={{ cursor: "pointer", marginLeft: "4px"}}
                         onClick={() => handleDeleteOrder(order.orderId)}
                       >

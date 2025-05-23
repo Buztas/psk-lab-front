@@ -408,3 +408,83 @@
          font-size: 0.9rem;
     }
 }
+
+.menuItemDescriptionShort {
+  width: 100%;
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.addItemButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: 500;
+}
+
+.addItemButton:hover {
+  background-color: #218838;
+}
+
+.menuActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 100px;
+}
+
+.editButton {
+  background-color: #8b4513;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.editButton:hover {
+  background-color: #724011;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+  .menuActions {
+    flex-direction: row;
+    gap: 0.25rem;
+    min-width: auto;
+  }
+  
+  .editButton, .deleteButton {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.5rem;
+  }
+  
+  .addItemButton {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.85rem;
+  }
+}
