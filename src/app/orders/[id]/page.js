@@ -42,7 +42,7 @@ export default function OrderDetailPage({ params }) {
         }
         setLoading(true);
         let orderData = await orderService.getOrderById(orderId);
-        if (orderData.pickupTime) {
+        if (orderData.pickupTime && orderData.status === "PENDING") {
           const pickupTime = new Date(orderData.pickupTime.replace(" ", "T"));
           const now = new Date();
           try {

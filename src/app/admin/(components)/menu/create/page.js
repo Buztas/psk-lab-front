@@ -102,67 +102,113 @@ export default function CreateMenuItemPage() {
         <div className={styles.itemDetail}>
           <h2 className={styles.menuItemName}>Create Menu Item</h2>
 
+          {error && <div className={styles.errorMessage}>{error}</div>}
+
           <form onSubmit={handleSubmit} className={styles.optionsContainer}>
-            {error && <div className={styles.errorMessage}>{error}</div>}
-
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Item name"
-              required
-              className={styles.quantityInput}
-            />
-
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Description"
-              rows={3}
-              required
-              className={styles.menuItemDescription}
-              style={{ resize: "vertical" }}
-            />
-
-            <select
-              name="type"
-              value={form.type}
-              onChange={handleChange}
-              required
-              className={styles.quantityInput}
-            >
-              <option value="" disabled>
-                Select type
-              </option>
-              <option value="DRINK">DRINK</option>
-              <option value="FOOD">FOOD</option>
-            </select>
-
-            <input
-              type="number"
-              name="price"
-              value={form.price}
-              onChange={handleChange}
-              placeholder="Base price (EUR)"
-              step="0.01"
-              required
-              className={styles.quantityInput}
-            />
-
-            <input
-              type="number"
-              name="stock"
-              value={form.stock}
-              onChange={handleChange}
-              placeholder="Stock"
-              required
-              className={styles.quantityInput}
-            />
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="name">
+                Item Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Enter item name"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
 
             <div className={styles.optionSection}>
-              <h3 className={styles.optionTitle}>Variations</h3>
+              <label className={styles.optionTitle} htmlFor="description">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                rows={3}
+                required
+                style={{ 
+                  resize: "vertical",
+                  width: "100%",
+                  padding: "0.65rem 0.85rem",
+                  fontSize: "0.95rem",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                  backgroundColor: "#fff",
+                  boxShadow: "inset 0 1px 2px rgba(0,0,0,0.02)",
+                  transition: "border 0.2s ease"
+                }}
+                onFocus={(e) => e.target.style.borderColor = "#8b4513"}
+                onBlur={(e) => e.target.style.borderColor = "#ddd"}
+              />
+            </div>
+
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="type">
+                Item Type
+              </label>
+              <select
+                id="type"
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                required
+                className={styles.quantityInput}
+              >
+                <option value="" disabled>
+                  Select type
+                </option>
+                <option value="DRINK">DRINK</option>
+                <option value="FOOD">FOOD</option>
+              </select>
+            </div>
+
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="price">
+                Base Price (EUR)
+              </label>
+              <input
+                id="price"
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
+
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="stock">
+                Stock Quantity
+              </label>
+              <input
+                id="stock"
+                type="number"
+                name="stock"
+                value={form.stock}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
+
+            <div className={styles.optionSection}>
+              <h3 className={styles.optionTitle}>Available Variations</h3>
+              <p style={{ fontSize: "0.9rem", color: "#666", marginBottom: "1rem" }}>
+                Select variations that can be added to this menu item:
+              </p>
 
               <div className={styles.checkboxGroup}>
                 {variations.map((variation) => (
@@ -186,23 +232,30 @@ export default function CreateMenuItemPage() {
                   </label>
                 ))}
               </div>
+
+              {variations.length === 0 && (
+                <p style={{ fontSize: "0.9rem", color: "#999", fontStyle: "italic" }}>
+                  No variations available. Create variations first to add them to menu items.
+                </p>
+              )}
             </div>
 
-            <button
-              type="submit"
-              className={styles.addToCartButton}
-              disabled={loading}
-            >
-              {loading ? "Creating..." : "Create Item"}
-            </button>
-            <button
-              type="button"
-              className={styles.backButton}
-              onClick={() => router.push("/admin/menu")}
-              style={{ marginTop: "1rem" }}
-            >
-              ← Back to Menu
-            </button>
+            <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexDirection: "column" }}>
+              <button
+                type="submit"
+                className={styles.addToCartButton}
+                disabled={loading}
+              >
+                {loading ? "Creating..." : "💾 Create Item"}
+              </button>
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={() => router.push("/admin/menu")}
+              >
+                ← Back to Menu
+              </button>
+            </div>
           </form>
         </div>
       </div>

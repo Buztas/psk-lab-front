@@ -110,7 +110,15 @@ export default function EditMenuItemPage() {
   };
 
   if (loading) {
-    return <div className={styles.loadingContainer}>Loading...</div>;
+    return (
+      <div className={styles.container}>
+        <AdminNavbar activeTab="menu" />
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner}></div>
+          <p>Loading menu item...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -121,67 +129,113 @@ export default function EditMenuItemPage() {
         <div className={styles.itemDetail}>
           <h2 className={styles.menuItemName}>Edit Menu Item</h2>
 
+          {error && <div className={styles.errorMessage}>{error}</div>}
+
           <form onSubmit={handleSubmit} className={styles.optionsContainer}>
-            {error && <div className={styles.errorMessage}>{error}</div>}
-
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              placeholder="Item name"
-              required
-              className={styles.quantityInput}
-            />
-
-            <textarea
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-              placeholder="Description"
-              rows={3}
-              required
-              className={styles.menuItemDescription}
-              style={{ resize: "vertical" }}
-            />
-
-            <select
-              name="type"
-              value={form.type}
-              onChange={handleChange}
-              required
-              className={styles.quantityInput}
-            >
-              <option value="" disabled>
-                Select Type
-              </option>
-              <option value="DRINK">DRINK</option>
-              <option value="FOOD">FOOD</option>
-            </select>
-
-            <input
-              type="number"
-              name="price"
-              value={form.price}
-              onChange={handleChange}
-              placeholder="Base price (EUR)"
-              step="0.01"
-              required
-              className={styles.quantityInput}
-            />
-
-            <input
-              type="number"
-              name="stock"
-              value={form.stock}
-              onChange={handleChange}
-              placeholder="Stock"
-              required
-              className={styles.quantityInput}
-            />
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="name">
+                Item Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Enter item name"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
 
             <div className={styles.optionSection}>
-              <h3 className={styles.optionTitle}>Variations</h3>
+              <label className={styles.optionTitle} htmlFor="description">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                placeholder="Enter description"
+                rows={3}
+                required
+                style={{ 
+                  resize: "vertical",
+                  width: "100%",
+                  padding: "0.65rem 0.85rem",
+                  fontSize: "0.95rem",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                  backgroundColor: "#fff",
+                  boxShadow: "inset 0 1px 2px rgba(0,0,0,0.02)",
+                  transition: "border 0.2s ease"
+                }}
+                onFocus={(e) => e.target.style.borderColor = "#8b4513"}
+                onBlur={(e) => e.target.style.borderColor = "#ddd"}
+              />
+            </div>
+
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="type">
+                Item Type
+              </label>
+              <select
+                id="type"
+                name="type"
+                value={form.type}
+                onChange={handleChange}
+                required
+                className={styles.quantityInput}
+              >
+                <option value="" disabled>
+                  Select Type
+                </option>
+                <option value="DRINK">DRINK</option>
+                <option value="FOOD">FOOD</option>
+              </select>
+            </div>
+
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="price">
+                Base Price (EUR)
+              </label>
+              <input
+                id="price"
+                type="number"
+                name="price"
+                value={form.price}
+                onChange={handleChange}
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
+
+            <div className={styles.optionSection}>
+              <label className={styles.optionTitle} htmlFor="stock">
+                Stock Quantity
+              </label>
+              <input
+                id="stock"
+                type="number"
+                name="stock"
+                value={form.stock}
+                onChange={handleChange}
+                placeholder="0"
+                min="0"
+                required
+                className={styles.quantityInput}
+              />
+            </div>
+
+            <div className={styles.optionSection}>
+              <h3 className={styles.optionTitle}>Item Variations</h3>
+              <p style={{ fontSize: "0.9rem", color: "#666", marginBottom: "1rem" }}>
+                Add specific variations for this menu item:
+              </p>
 
               <div className={styles.checkboxGroup}>
                 {variations.map((variation, index) => (
@@ -190,44 +244,70 @@ export default function EditMenuItemPage() {
                     className={styles.selectedVariationsSection}
                     style={{ gap: "0.75rem" }}
                   >
-                    <input
-                      type="text"
-                      placeholder="Variation name"
-                      value={variation.name}
-                      onChange={(e) =>
-                        handleVariationChange(index, "name", e.target.value)
-                      }
-                      className={styles.quantityInput}
-                      required
-                    />
-                    <input
-                      type="number"
-                      placeholder="Price (EUR)"
-                      value={variation.price}
-                      onChange={(e) =>
-                        handleVariationChange(index, "price", e.target.value)
-                      }
-                      step="0.01"
-                      className={styles.quantityInput}
-                      required
-                    />
-                    <input
-                      type="number"
-                      placeholder="Stock"
-                      value={variation.stock}
-                      onChange={(e) =>
-                        handleVariationChange(index, "stock", e.target.value)
-                      }
-                      className={styles.quantityInput}
-                      required
-                    />
+                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                      <label style={{ fontSize: "0.9rem", fontWeight: "500", color: "#333" }}>
+                        Variation Name:
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter variation name"
+                        value={variation.name}
+                        onChange={(e) =>
+                          handleVariationChange(index, "name", e.target.value)
+                        }
+                        className={styles.quantityInput}
+                        required
+                      />
+                    </div>
+
+                    <div style={{ display: "flex", gap: "1rem" }}>
+                      <div style={{ flex: 1 }}>
+                        <label style={{ fontSize: "0.9rem", fontWeight: "500", color: "#333" }}>
+                          Price (EUR):
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="0.00"
+                          value={variation.price}
+                          onChange={(e) =>
+                            handleVariationChange(index, "price", e.target.value)
+                          }
+                          step="0.01"
+                          min="0"
+                          className={styles.quantityInput}
+                          required
+                        />
+                      </div>
+
+                      <div style={{ flex: 1 }}>
+                        <label style={{ fontSize: "0.9rem", fontWeight: "500", color: "#333" }}>
+                          Stock:
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="0"
+                          value={variation.stock}
+                          onChange={(e) =>
+                            handleVariationChange(index, "stock", e.target.value)
+                          }
+                          min="0"
+                          className={styles.quantityInput}
+                          required
+                        />
+                      </div>
+                    </div>
+
                     <button
                       type="button"
-                      className={styles.backButton}
+                      className={styles.deleteButton || styles.backButton}
                       onClick={() => removeVariation(index)}
-                      style={{ marginTop: "0.5rem" }}
+                      style={{ 
+                        marginTop: "0.5rem",
+                        backgroundColor: "#dc3545",
+                        color: "white"
+                      }}
                     >
-                      Remove
+                      🗑️ Remove Variation
                     </button>
                   </div>
                 ))}
@@ -237,26 +317,31 @@ export default function EditMenuItemPage() {
                 type="button"
                 className={styles.addToCartButton}
                 onClick={addVariation}
+                style={{ 
+                  backgroundColor: "#28a745",
+                  marginTop: "1rem"
+                }}
               >
-                + Add Variation
+                + Add New Variation
               </button>
             </div>
 
-            <button
-              type="submit"
-              className={styles.addToCartButton}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save Changes"}
-            </button>
-            <button
-              type="button"
-              className={styles.backButton}
-              onClick={() => router.push("/admin/menu")}
-              style={{ marginTop: "1rem" }}
-            >
-              ← Back to Menu
-            </button>
+            <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexDirection: "column" }}>
+              <button
+                type="submit"
+                className={styles.addToCartButton}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "💾 Save Changes"}
+              </button>
+              <button
+                type="button"
+                className={styles.backButton}
+                onClick={() => router.push("/admin/menu")}
+              >
+                ← Back to Menu
+              </button>
+            </div>
           </form>
         </div>
       </div>

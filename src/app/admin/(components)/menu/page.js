@@ -75,9 +75,9 @@ export default function MenuPage() {
 
       <div className={styles.detailContainer}>
         <div className={styles.itemDetail} style={{ width: "100%", maxWidth: "1000px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
             <h2 className={styles.menuItemName}>Manage Menu</h2>
-            <button className={styles.addToCartButton} onClick={handleAdd}>
+            <button className={styles.addItemButton} onClick={handleAdd}>
               + Add Item
             </button>
           </div>
@@ -103,7 +103,7 @@ export default function MenuPage() {
                   borderRadius: "6px",
                   backgroundColor: "#fafafa"
                 }}>
-                  <div>
+                  <div style={{ flex: 1, marginRight: "2rem", maxWidth: "calc(100% - 140px)" }}>
                     <div className={styles.menuItemType}>
                       {getTypeLabel(item.type)}
                     </div>
@@ -121,18 +121,18 @@ export default function MenuPage() {
                     </div>
                   </div>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  <div className={styles.menuActions}>
                     <button 
-                      className={styles.backButton}
+                      className={styles.editButton}
                       onClick={() => handleEdit(item.id)}
                     >
-                      Edit
+                      ✏️ Edit
                     </button>
                     <button 
-                      className={styles.backButton}
+                      className={styles.deleteButton}
                       onClick={() => handleDelete(item.id)}
                     >
-                      Delete
+                      🗑️ Delete
                     </button>
                   </div>
                 </div>

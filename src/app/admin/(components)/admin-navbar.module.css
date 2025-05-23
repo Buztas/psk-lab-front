@@ -9,12 +9,6 @@
   flex-wrap: wrap;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .logoIcon {
   font-size: 1.5rem;
 }
@@ -84,6 +78,7 @@
   padding: 0.1rem 0.4rem;
   border-radius: 4px;
   font-weight: 500;
+  flex-shrink: 0;
 }
 
 .logoutButton {
@@ -100,6 +95,12 @@
 .logoutButton:hover {
   background-color: #6a340f;
   border: none;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 @media (max-width: 768px) {
@@ -137,10 +138,18 @@
     padding-top: 0.75rem;
     border-left: none;
     border-top: 1px solid #eee;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .userEmail {
-    max-width: 150px;
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .logoutButton {
+    flex-shrink: 0;
   }
 }
 
@@ -152,5 +161,22 @@
 
   .navButton {
     width: 100%;
+  }
+
+  .userInfo {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .userEmail {
+    justify-content: center;
+    text-align: center;
+    max-width: none;
+  }
+
+  .logoutButton {
+    width: 100%;
+    text-align: center;
   }
 }
