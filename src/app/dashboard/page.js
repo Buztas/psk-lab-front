@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import styles from "./dashboard.module.css"
 import { authService } from "../../services/authService"
 import { menuService } from "../../services/menuService"
+import AdminPage from "../admin/page"
 import { updateCartCount } from "../../utils/cartUtils"
 import Navbar from "../../components/Navbar.js"
 
@@ -23,29 +24,28 @@ export default function DashboardPage() {
           router.push('/')
           return
         }
-        
+
         const currentUser = authService.getCurrentUser()
         setUser(currentUser)
-        
+
         updateCartCount(setCartCount)
-        
-        setLoading(true)
+
         const menuData = await menuService.getAllMenuItems()
         setMenuItems(menuData.content || [])
-        setLoading(false)
       } catch (err) {
         console.error("Error loading data:", err)
         setError("Failed to load menu items. Please try again.")
+      } finally {
         setLoading(false)
       }
     }
-    
+
     checkAuth()
-    
+
     const handleCartUpdate = () => {
       updateCartCount(setCartCount)
     }
-    
+
     window.addEventListener('cartUpdated', handleCartUpdate)
     return () => {
       window.removeEventListener('cartUpdated', handleCartUpdate)
@@ -55,15 +55,22 @@ export default function DashboardPage() {
   const navigateToMenuItem = (menuItemId) => {
     router.push(`/menuItem/${encodeURIComponent(menuItemId)}`)
   }
-  
+
   const handleLogout = () => {
     authService.logout()
     router.push('/')
   }
 
   const getItemTypeLabel = (type) => {
-    if (!type) return "";
-    return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+    if (!type) return ""
+    return type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()
+  }
+
+  // Conditional rendering by role
+  if (!user) return null
+
+  if (user.role === 'ADMIN') {
+    return <AdminPage />
   }
 
   return (

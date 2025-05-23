@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import styles from "./cart.module.css"
 import navStyles from "../dashboard/dashboard.module.css"
 import { authService } from "../../services/authService"
-import { orderService } from "../../services/orderService"
+import { orderService } from "../../services/orderService.js"
 import Navbar from "../../components/Navbar.js"
 import { 
   getCartItems, 

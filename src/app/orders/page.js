@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import styles from "./orders.module.css"
 import navStyles from "../dashboard/dashboard.module.css"
 import { authService } from "../../services/authService"
-import { orderService } from "../../services/orderService"
+import { orderService } from "../../services/orderService.js"
 import { updateCartCount } from "../../utils/cartUtils"
 import Navbar from "../../components/Navbar.js"
 
@@ -162,11 +162,18 @@ export default function OrdersPage() {
                       {order.itemCount} {order.itemCount === 1 ? 'item' : 'items'}
                     </div>
                     <div className={styles.orderActions}>
-                      <button 
+                      <button
                         className={styles.viewButton}
                         onClick={() => handleViewOrder(order.orderId)}
                       >
-                        View Details
+                        🔎 View
+                      </button>
+                      <button
+                        className={styles.backButton}
+                        style={{ cursor: "pointer", marginTop: "5px"}}
+                        onClick={() => handleDeleteOrder(order.orderId)}
+                      >
+                        🗑️ Delete
                       </button>
                     </div>
                   </div>

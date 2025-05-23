@@ -26,13 +26,11 @@ export const authService = {
 
       const data = await response.json();
       const decodedData = jwtDecode(data.token);
-
       localStorage.setItem('token', data.token);
-      
       const user = {
         id: decodedData?.id,
         email: email,
-        role: data.userResponse?.roleType || 'CUSTOMER'
+        role: decodedData.role || 'CUSTOMER'
       };
       localStorage.setItem('user', JSON.stringify(user));
       

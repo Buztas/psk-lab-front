@@ -1,16 +1,14 @@
 const API_URL = 'http://localhost:8080';
 
-export const menuService = {
-  getAllMenuItems: async (page = 0, size = 20, sort = "name,asc") => {
+export const adminUserService = {
+  getAllUsers: async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('Authentication required');
       }
 
-      const url = `${API_URL}/api/menu/items?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`;
-
-      const response = await fetch(url, {
+      const response = await fetch(`${API_URL}/api/user`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -20,10 +18,9 @@ export const menuService = {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          message: 'Failed to fetch menu items'
+          message: 'Failed to fetch users',
         }));
-        
-        const error = new Error(errorData.message || 'Failed to fetch menu items');
+        const error = new Error(errorData.message || 'Failed to fetch users');
         error.status = response.status;
         error.data = errorData;
         throw error;
@@ -31,21 +28,19 @@ export const menuService = {
 
       return await response.json();
     } catch (error) {
-      console.error('Error fetching menu items:', error);
+      console.error('Error fetching users:', error);
       throw error;
     }
   },
 
-  getAllVariations: async (page = 0, size = 30, sort = "name,asc") => {
+  getUserById: async (id) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('Authentication required');
       }
 
-      const url = `${API_URL}/api/menu/variations?page=${page}&size=${size}&sort=${encodeURIComponent(sort)}`;
-
-      const response = await fetch(url, {
+      const response = await fetch(`${API_URL}/api/user/${id}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -55,10 +50,9 @@ export const menuService = {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          message: 'Failed to fetch variations'
+          message: 'Failed to fetch user',
         }));
-        
-        const error = new Error(errorData.message || 'Failed to fetch variations');
+        const error = new Error(errorData.message || 'Failed to fetch user');
         error.status = response.status;
         error.data = errorData;
         throw error;
@@ -66,34 +60,32 @@ export const menuService = {
 
       return await response.json();
     } catch (error) {
-      console.error('Error fetching variations:', error);
+      console.error('Error fetching user:', error);
       throw error;
     }
   },
-  
-  getMenuItemById: async (id) => {
+
+  updateUser: async (id, userDTO) => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('Authentication required');
       }
 
-      const response = await fetch(`${API_URL}/api/menu/items/${id}`, {
-        method: 'GET',
+      const response = await fetch(`${API_URL}/api/user/${id}`, {
+        method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify(userDTO),
       });
-      
-      console.log("Fetched menu item: ", response);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({
-          message: 'Failed to fetch menu item'
+          message: 'Failed to update user',
         }));
-        
-        const error = new Error(errorData.message || 'Failed to fetch menu item');
+        const error = new Error(errorData.message || 'Failed to update user');
         error.status = response.status;
         error.data = errorData;
         throw error;
@@ -101,10 +93,42 @@ export const menuService = {
 
       return await response.json();
     } catch (error) {
-      console.error('Error fetching menu item:', error);
+      console.error('Error updating user:', error);
+      throw error;
+    }
+  },
+
+  deleteUser: async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required');
+      }
+
+      const response = await fetch(`${API_URL}/api/user/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          message: 'Failed to delete user',
+        }));
+        const error = new Error(errorData.message || 'Failed to delete user');
+        error.status = response.status;
+        error.data = errorData;
+        throw error;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error deleting user:', error);
       throw error;
     }
   }
 };
 
-export default menuService;
+export default adminUserService;
