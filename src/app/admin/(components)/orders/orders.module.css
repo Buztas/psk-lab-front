@@ -347,6 +347,21 @@
   }
 }
 
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
 @media (max-width: 900px) {
   .orderItem {
     border-left: 4px solid #f0e6dd;

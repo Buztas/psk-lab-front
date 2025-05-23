@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { variationsService } from "@/services/variationsService";
 import AdminNavbar from "../AdminNavbar";
-import styles from "./../menu/menu.module.css";
+import styles from "./variations.module.css";
 import authService from "@/services/authService";
 
 export default function VariationsPage() {
@@ -59,51 +59,49 @@ export default function VariationsPage() {
     <div className={styles.container}>
       <AdminNavbar activeTab="variations" />
 
-      <div className={styles.detailContainer}>
-        <div className={styles.itemDetail} style={{ maxWidth: "900px", width: "100%" }}>
-          <h2 className={styles.menuItemName}>Manage Variations</h2>
+      <div className={styles.contentContainer}>
+        <div className={styles.variationsContainer}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+            <h2 className={styles.pageTitle}>Manage Variations</h2>
+            <button className={styles.createButton} onClick={handleCreate}>
+              + Add Variation
+            </button>
+          </div>
 
-          <button
-            className={styles.addToCartButton}
-            style={{ marginBottom: "1.5rem" }}
-            onClick={handleCreate}
-          >
-            + Create Variation
-          </button>
+          {error && <div className={styles.errorMessage}>{error}</div>}
 
           {loading ? (
-            <div className={styles.loadingContainer}>Loading...</div>
-          ) : error ? (
-            <div className={styles.errorMessage}>{error}</div>
+            <div className={styles.loadingContainer}>
+              <div className={styles.loadingSpinner}></div>
+              <p>Loading variations...</p>
+            </div>
+          ) : variations.length === 0 ? (
+            <div className={styles.emptyContainer}>
+              <p>No variations found.</p>
+            </div>
           ) : (
-            <div className={styles.menuAdminList}>
+            <div className={styles.variationsList}>
               {variations.map((variation) => (
-                <div key={variation.id} className={styles.menuAdminCard} style={{
-                  boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
-                  padding: "1.5rem",
-                  borderRadius: "10px"
-                }}>
-                  <div style={{ flex: 1 }}>
-                    <div className={styles.menuItemName}>{variation.name}</div>
-                    <div className={styles.menuItemDescription}>
+                <div key={variation.id} className={styles.variationCard}>
+                  <div style={{ flex: 1, marginRight: "2rem", maxWidth: "calc(100% - 140px)" }}>
+                    <div className={styles.variationName}>{variation.name}</div>
+                    <div className={styles.variationDescription}>
                       {variation.description}
                     </div>
-                    <div className={styles.menuItemBasePrice}>
-                      €{variation.price.toFixed(2)} | Stock: {variation.stock}
+                    <div className={styles.variationPrice}>
+                      €{variation.price.toFixed(2)} — {variation.stock} in stock
                     </div>
                   </div>
 
-                  <div className={styles.menuAdminActions} style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  <div className={styles.variationActions}>
                     <button
-                      className={styles.viewButton}
-                      style={{ width: "100%", cursor: "pointer" }}
+                      className={styles.editButton}
                       onClick={() => handleEdit(variation.id)}
                     >
                       ✏️ Edit
                     </button>
                     <button
-                      className={styles.backButton}
-                      style={{ width: "100%" }}
+                      className={styles.deleteButton}
                       onClick={() => handleDelete(variation.id)}
                     >
                       🗑️ Delete
