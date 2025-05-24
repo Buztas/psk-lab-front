@@ -6,6 +6,7 @@ import styles from "./dashboard.module.css"
 import { authService } from "../../services/authService"
 import { menuService } from "../../services/menuService"
 import AdminPage from "../admin/page"
+import EmployeePage from "../employee/dashboard/page"
 import { updateCartCount } from "../../utils/cartUtils"
 import Navbar from "../../components/Navbar.js"
 
@@ -67,10 +68,16 @@ export default function DashboardPage() {
   }
 
   // Conditional rendering by role
-  if (!user) return null
+  if (!user) {
+    console.log("No user, returning null");
+    return null;
+  }
 
   if (user.role === 'ADMIN') {
     return <AdminPage />
+  } else if (user.role === 'EMPLOYEE') {
+    console.log("User is an employee")
+    return <EmployeePage />
   }
 
   return (
