@@ -81,12 +81,18 @@ export default function EmployeeOrdersPage() {
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await orderService.updateOrderStatus(orderId, newStatus);
-      const updatedOrders = orders.map(order => 
-        order.orderId === orderId ? { ...order, status: newStatus } : order
-      );
-      setOrders(updatedOrders);
-      filterOrdersByStatus(updatedOrders, statusFilter);
+      const orderToUpdate = orders.find(order => order.orderId === orderId);
+      if (!orderToUpdate) {
+        alert("Order not found.");
+        return;
+      }
+  
+      await orderService.updateOrderStatus(orderId, newStatus, orderToUpdate.version);
+      
+      const response = await orderService.getAllOrders(currentPage, pageSize);
+      const allOrders = response.content || [];
+      setOrders(allOrders);
+      filterOrdersByStatus(allOrders, statusFilter);
     } catch (err) {
       console.error("Failed to update order status:", err);
       alert("Failed to update order status.");

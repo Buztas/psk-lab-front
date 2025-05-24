@@ -44,14 +44,13 @@ export default function EmployeeOrderDetailPage() {
   }, [orderId, router]);
 
   const handleStatusChange = async (newStatus) => {
-    if (!confirm(`Are you sure you want to mark this order as ${newStatus.toLowerCase()}?`)) {
-      return;
-    }
 
     setUpdating(true);
     try {
-      await orderService.updateOrderStatus(orderId, newStatus);
-      setOrder(prev => ({ ...prev, status: newStatus }));
+      await orderService.updateOrderStatus(orderId, newStatus, order.version);
+      
+      const updatedOrderData = await orderService.getOrderById(orderId);
+      setOrder(updatedOrderData);
     } catch (err) {
       console.error("Failed to update order status:", err);
       alert("Failed to update order status.");
