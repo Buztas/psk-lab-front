@@ -53,6 +53,12 @@ export default function AdminNavbar({ activeTab }) {
         >
           Variations
         </button>
+        <button
+          className={`${styles.navButton} ${activeTab === "payments" ? styles.activeNavButton : ""}`}
+          onClick={() => handleNavigation("/admin/payments")}
+        >
+          Payments
+        </button>
 
         <div className={styles.userInfo}>
           {userData && (
