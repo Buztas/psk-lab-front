@@ -79,26 +79,6 @@ export default function EmployeeOrdersPage() {
     router.push(`/employee/orders/${orderId}`);
   };
 
-  const handleStatusChange = async (orderId, newStatus) => {
-    try {
-      const orderToUpdate = orders.find(order => order.orderId === orderId);
-      if (!orderToUpdate) {
-        alert("Order not found.");
-        return;
-      }
-  
-      await orderService.updateOrderStatus(orderId, newStatus, orderToUpdate.version);
-      
-      const response = await orderService.getAllOrders(currentPage, pageSize);
-      const allOrders = response.content || [];
-      setOrders(allOrders);
-      filterOrdersByStatus(allOrders, statusFilter);
-    } catch (err) {
-      console.error("Failed to update order status:", err);
-      alert("Failed to update order status.");
-    }
-  };
-
   const formatDateTime = (dateTimeString) => {
     if (!dateTimeString) return "N/A";
     const date = new Date(dateTimeString);
@@ -128,28 +108,6 @@ export default function EmployeeOrdersPage() {
         return "Collected";
       default:
         return status;
-    }
-  };
-
-  const getNextStatus = (currentStatus) => {
-    switch (currentStatus) {
-      case "PENDING":
-        return "READY";
-      case "READY":
-        return "COLLECTED";
-      default:
-        return null;
-    }
-  };
-
-  const getStatusButtonText = (currentStatus) => {
-    switch (currentStatus) {
-      case "PENDING":
-        return "✅ Mark Ready";
-      case "READY":
-        return "📦 Mark Collected";
-      default:
-        return null;
     }
   };
 
@@ -265,14 +223,6 @@ export default function EmployeeOrdersPage() {
                       >
                         🔎 View
                       </button>
-                      {getNextStatus(order.status) && (
-                        <button
-                          className={styles.statusButton}
-                          onClick={() => handleStatusChange(order.orderId, getNextStatus(order.status))}
-                        >
-                          {getStatusButtonText(order.status)}
-                        </button>
-                      )}
                     </div>
                   </div>
                 ))}
