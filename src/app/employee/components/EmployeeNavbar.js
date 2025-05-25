@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation";
-import styles from "./admin-navbar.module.css";
+import styles from "./employee-navbar.module.css";
 import authService from "@/services/authService";
 
-export default function AdminNavbar({ activeTab }) {
+export default function EmployeeNavbar({ activeTab }) {
   const router = useRouter();
   const userData = authService.getCurrentUser();
 
@@ -18,53 +18,41 @@ export default function AdminNavbar({ activeTab }) {
   return (
     <nav className={styles.navbar}>
       <div className={styles.logo}>
-        <span className={styles.logoIcon}>⚙️</span>
-        <h1 className={styles.logoText}>Kavapp Admin</h1>
+        <span className={styles.logoIcon}>👨‍💼</span>
+        <h1 className={styles.logoText}>Kavapp Employee</h1>
       </div>
 
       <div className={styles.navButtons}>
         <button
           className={`${styles.navButton} ${activeTab === "dashboard" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/dashboard")}
+          onClick={() => handleNavigation("/employee/dashboard")}
         >
           Dashboard
         </button>
         <button
           className={`${styles.navButton} ${activeTab === "menu" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/admin/menu")}
+          onClick={() => handleNavigation("/employee/menu")}
         >
           Menu Items
         </button>
         <button
           className={`${styles.navButton} ${activeTab === "orders" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/admin/orders")}
+          onClick={() => handleNavigation("/employee/orders")}
         >
           Orders
         </button>
         <button
-          className={`${styles.navButton} ${activeTab === "users" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/admin/users")}
-        >
-          Users
-        </button>
-        <button
           className={`${styles.navButton} ${activeTab === "variations" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/admin/variations")}
+          onClick={() => handleNavigation("/employee/variations")}
         >
           Variations
-        </button>
-        <button
-          className={`${styles.navButton} ${activeTab === "payments" ? styles.activeNavButton : ""}`}
-          onClick={() => handleNavigation("/admin/payments")}
-        >
-          Payments
         </button>
 
         <div className={styles.userInfo}>
           {userData && (
             <span className={styles.userEmail}>
               {userData.email}
-              <span className={styles.adminBadge}>Admin</span>
+              <span className={styles.employeeBadge}>Employee</span>
             </span>
           )}
           <button onClick={handleLogout} className={styles.logoutButton}>

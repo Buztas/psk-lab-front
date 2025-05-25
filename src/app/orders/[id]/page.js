@@ -69,7 +69,7 @@ export default function OrderDetailPage({ params }) {
 
         try {
           const paymentData = await paymentService.getPaymentByOrderId(orderId);
-          if(paymentData.sucess && paymentData.data !== undefined) {
+          if(paymentData.success && paymentData.data !== undefined) {
             setPayment(paymentData.data);
           }
         } catch (paymentError) {

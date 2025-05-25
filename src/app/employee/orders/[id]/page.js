@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import AdminNavbar from "../../AdminNavbar";
-import styles from "@/app/employee/orders/[id]/employee-order-detail.module.css";
+import EmployeeNavbar from "../../components/EmployeeNavbar";
+import styles from "./employee-order-detail.module.css";
 import authService from "@/services/authService";
 import orderService from "@/services/orderService";
 
@@ -25,7 +25,7 @@ export default function EmployeeOrderDetailPage() {
         }
 
         const currentUser = authService.getCurrentUser();
-        if (currentUser.role !== "ADMIN") {
+        if (currentUser.role !== "EMPLOYEE") {
           router.push("/dashboard");
           return;
         }
@@ -116,7 +116,7 @@ export default function EmployeeOrderDetailPage() {
   if (loading) {
     return (
       <div className={styles.container}>
-        <AdminNavbar activeTab="orders" />
+        <EmployeeNavbar activeTab="orders" />
         <div className={styles.loadingContainer}>
           <div className={styles.loadingSpinner}></div>
           <p>Loading order details...</p>
@@ -128,13 +128,13 @@ export default function EmployeeOrderDetailPage() {
   if (error) {
     return (
       <div className={styles.container}>
-        <AdminNavbar activeTab="orders" />
+        <EmployeeNavbar activeTab="orders" />
         <div className={styles.contentContainer}>
           <div className={styles.errorContainer}>
             <p className={styles.errorMessage}>{error}</p>
             <button 
               className={styles.backButton}
-              onClick={() => router.push("/admin/orders")}
+              onClick={() => router.push("/employee/orders")}
             >
               ← Back to Orders
             </button>
@@ -147,13 +147,13 @@ export default function EmployeeOrderDetailPage() {
   if (!order) {
     return (
       <div className={styles.container}>
-        <AdminNavbar activeTab="orders" />
+        <EmployeeNavbar activeTab="orders" />
         <div className={styles.contentContainer}>
           <div className={styles.errorContainer}>
             <p>Order not found.</p>
             <button 
               className={styles.backButton}
-              onClick={() => router.push("/admin/orders")}
+              onClick={() => router.push("/employee/orders")}
             >
               ← Back to Orders
             </button>
@@ -165,7 +165,7 @@ export default function EmployeeOrderDetailPage() {
 
   return (
     <div className={styles.container}>
-      <AdminNavbar activeTab="orders" />
+      <EmployeeNavbar activeTab="orders" />
 
       <div className={styles.contentContainer}>
         <div className={styles.orderContainer}>
@@ -173,7 +173,7 @@ export default function EmployeeOrderDetailPage() {
             <h2 className={styles.pageTitle}>Order Details</h2>
             <button 
               className={styles.backButton}
-              onClick={() => router.push("/admin/orders")}
+              onClick={() => router.push("/employee/orders")}
             >
               ← Back to Orders
             </button>
