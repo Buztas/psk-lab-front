@@ -22,10 +22,10 @@ export const paymentService = {
         throw new Error(errorData.message || 'Failed to create payment')
       }
 
-      return await response.json()
+      return { success: true, data: await response.json()}
     } catch (error) {
       console.error('Error creating payment:', error)
-      throw error
+      return { success: false, status: error}
     }
   },
 
@@ -97,10 +97,10 @@ export const paymentService = {
       const payment = payments.find(p => p.order?.orderId === orderId || p.orderId === orderId)
       
       if (!payment) {
-        throw new Error('No payment found for this order')
+        return { success: false }
       }
       
-      return payment
+      return { sucess: true, data: payment }
     } catch (error) {
       console.error('Error getting payment by order ID:', error)
       throw error
