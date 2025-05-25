@@ -1,15 +1,13 @@
 .container {
   min-height: 100vh;
-  background-color: #fff8f0;
-}
-
-.activeNavButton {
-  background-color: #8b4513;
-  color: white;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
 }
 
 .contentContainer {
-  padding: 2rem 1rem;
+  flex: 1;
+  padding: 2rem;
   display: flex;
   justify-content: center;
 }
@@ -17,20 +15,16 @@
 .loadingContainer {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  padding: 3rem 0;
-  color: #666;
-  min-height: 50vh;
-  width: 100%;
-  max-width: 800px;
+  align-items: center;
+  height: 50vh;
 }
 
 .loadingSpinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #8b4513;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #8B4513;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -42,55 +36,68 @@
 }
 
 .errorContainer {
-  background-color: #ffeaea;
-  border-radius: 8px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 2rem;
-  width: 100%;
-  max-width: 800px;
   text-align: center;
+  width: 100%;
+  max-width: 500px;
 }
 
 .errorTitle {
-  color: #e53935;
-  font-size: 1.5rem;
+  color: #dc3545;
   margin-bottom: 1rem;
 }
 
 .errorMessage {
   color: #666;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.orderContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+}
+
+.successMessage {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 2rem;
+  border: 1px solid #c3e6cb;
+  text-align: center;
+  font-weight: 500;
 }
 
 .backButton {
-  background: none;
+  background-color: #6c757d;
+  color: white;
   border: none;
-  color: #8b4513;
-  font-size: 1rem;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
   margin-bottom: 1.5rem;
 }
 
 .backButton:hover {
-  text-decoration: underline;
-}
-
-.orderContainer {
-  width: 100%;
-  max-width: 800px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
+  background-color: #5a6268;
 }
 
 .pageTitle {
-  font-size: 1.75rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
   color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .orderHeader {
@@ -98,31 +105,30 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .orderInfo {
-  flex-grow: 1;
+  flex: 1;
 }
 
 .orderIdSection {
   margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .orderIdLabel {
+  font-weight: 600;
   color: #666;
   margin-right: 0.5rem;
 }
 
 .orderId {
   font-family: monospace;
-  color: #333;
-  font-weight: 500;
-  word-break: break-all;
+  background-color: #f1f1f1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
 .orderDates {
@@ -133,14 +139,13 @@
 
 .dateInfo {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 .dateLabel {
+  font-weight: 600;
   color: #666;
-  width: 80px;
+  min-width: 80px;
 }
 
 .dateValue {
@@ -148,50 +153,101 @@
 }
 
 .orderStatus {
-  display: inline-block;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
   font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-  margin-left: 1rem;
+  white-space: nowrap;
 }
 
 .statusPending {
-  background-color: #fff3e0;
-  color: #ff9800;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
 }
 
 .statusReady {
-  background-color: #e0f7fa;
-  color: #00acc1;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
 .statusCollected {
-  background-color: #e8f5e9;
-  color: #43a047;
+  background-color: #cce7ff;
+  color: #004085;
+  border: 1px solid #99d6ff;
 }
 
-.orderItems {
+.paymentSection {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
   margin-bottom: 2rem;
 }
 
-.sectionTitle {
-  font-size: 1.3rem;
+.paymentInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.paymentRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.paymentRow:last-child {
+  border-bottom: none;
+}
+
+.paymentLabel {
+  font-weight: 500;
+  color: #666;
+}
+
+.paymentValue {
   font-weight: 600;
   color: #333;
-  margin-bottom: 1rem;
+}
+
+.paymentStatus {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.transactionId {
+  font-family: monospace;
+  font-size: 0.85rem;
+  background-color: #f1f1f1;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  word-break: break-all;
+  max-width: 200px;
+}
+
+.sectionTitle {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .itemsList {
-  border: 1px solid #eee;
-  border-radius: 6px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
   overflow: hidden;
 }
 
 .orderItem {
   padding: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .orderItem:last-child {
@@ -207,35 +263,30 @@
 
 .itemName {
   font-weight: 600;
-  font-size: 1.1rem;
   color: #333;
-  flex-grow: 1;
+  flex: 1;
 }
 
 .itemQuantity {
-  font-size: 0.95rem;
   color: #666;
   margin: 0 1rem;
+  font-weight: 500;
 }
 
 .itemPrice {
   font-weight: 600;
-  color: #8b4513;
-  font-size: 1.05rem;
+  color: #28a745;
 }
 
 .variationsContainer {
-  background-color: #f9f9f9;
-  padding: 0.75rem;
-  border-radius: 4px;
   margin-top: 0.5rem;
 }
 
 .variationsTitle {
   font-weight: 500;
   color: #666;
-  margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  margin-bottom: 0.25rem;
 }
 
 .variationsList {
@@ -245,41 +296,66 @@
 }
 
 .variation {
-  background-color: #f0e6dd;
-  color: #8b4513;
-  padding: 0.3rem 0.6rem;
+  background-color: #e9ecef;
+  color: #495057;
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.85rem;
 }
 
 .orderTotal {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
-  border-top: 2px solid #eee;
-  margin-bottom: 1.5rem;
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e0e0e0;
 }
 
 .totalLabel {
   font-size: 1.2rem;
   font-weight: 600;
   color: #333;
-  margin-right: 1rem;
 }
 
 .totalAmount {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: #8b4513;
+  color: #28a745;
+}
+
+.paymentAction {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.payButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.875rem 2rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.payButton:hover {
+  background-color: #0056b3;
 }
 
 .statusMessage {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-top: 1.5rem;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
 }
 
 .pendingIcon,
@@ -290,73 +366,63 @@
 }
 
 .messageText {
-  font-size: 1rem;
-  color: #555;
-  line-height: 1.4;
+  color: #333;
+  line-height: 1.5;
 }
 
 .pickupTime {
-  font-weight: 500;
-  color: #333;
-}
-
-.statusPending + .statusMessage {
-  background-color: #fff3e0;
-}
-
-.statusReady + .statusMessage {
-  background-color: #e0f7fa;
-}
-
-.statusCollected + .statusMessage {
-  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #007bff;
 }
 
 @media (max-width: 768px) {
-  .orderHeader {
-    flex-direction: column;
-  }
-  
-  .orderStatus {
-    margin: 1rem 0 0 0;
-    align-self: flex-start;
-  }
-  
-  .itemMainInfo {
-    flex-wrap: wrap;
-  }
-  
-  .itemName {
-    width: 100%;
-    margin-bottom: 0.5rem;
-  }
-  
-  .itemQuantity {
-    margin-left: 0;
-  }
-}
-
-@media (max-width: 600px) {
   .contentContainer {
-    padding: 1rem 0.5rem;
+    padding: 1rem;
   }
   
   .orderContainer {
-    padding: 1rem;
-    border-radius: 4px;
+    padding: 1.5rem;
   }
   
-  .pageTitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  .variationsList {
+  .orderHeader {
     flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .orderStatus {
+    align-self: flex-start;
+    margin-top: 1rem;
+  }
+  
+  .itemMainInfo {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 0.25rem;
   }
   
-  .variation {
-    width: fit-content;
+  .itemQuantity {
+    margin: 0;
+  }
+  
+  .paymentRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .transactionId {
+    max-width: 100%;
+  }
+  
+  .statusMessage {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .pendingIcon,
+  .readyIcon,
+  .collectedIcon {
+    margin-right: 0;
+    margin-bottom: 0.5rem;
   }
 }

@@ -21,6 +21,18 @@ export default function OrdersPage() {
   const pageSize = 10
   const router = useRouter()
 
+  const handleDeleteOrder = async (orderId) => {
+    if (!confirm("Are you sure you want to delete this order?")) return;
+
+    try {
+      await orderService.deleteOrder(orderId);
+      setOrders((prev) => prev.filter((o) => o.orderId !== orderId));
+    } catch (err) {
+      console.error("Failed to delete order:", err);
+      alert("Failed to delete order.");
+    }
+  };
+
   useEffect(() => {
     const loadOrders = async () => {
       try {
@@ -168,13 +180,13 @@ export default function OrdersPage() {
                       >
                         🔎 View
                       </button>
-                      <button
+                      {/* <button
                         className={styles.backButton}
                         style={{ cursor: "pointer", marginTop: "5px"}}
                         onClick={() => handleDeleteOrder(order.orderId)}
                       >
                         🗑️ Delete
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 ))}

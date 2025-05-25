@@ -103,13 +103,8 @@ export default function CartPage() {
       const updatedItems = clearCart()
       setCartItems(updatedItems)
       
-      alert("Your order has been placed successfully! Order ID: " + createdOrder.orderId)
+      router.push(`/payment?orderId=${createdOrder.orderId}`)
       
-      try {
-        router.push(`/orders/${createdOrder.orderId}`)
-      } catch {
-        router.push("/dashboard")
-      }
     } catch (err) {
       console.error("Error creating order:", err)
       setError("Failed to place your order. Please try again.")
@@ -193,7 +188,7 @@ export default function CartPage() {
               onClick={handleOrderAndPay}
               disabled={loading}
             >
-              {loading ? "Processing..." : "Order and pay"}
+              {loading ? "Processing..." : "Order and Pay"}
             </button>
           )}
           
