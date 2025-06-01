@@ -26,12 +26,11 @@ export default function PaymentPage() {
   const [stripeLoaded, setStripeLoaded] = useState(false);
 
   useEffect(() => {
-    if (!stripe && window.Stripe) {
-      const stripeInstance = window.Stripe(
-        "pk_test_51RRyaqFNJgeQJYSon9GUdJZnPCfw2wXjqmRobo58hdWrSZywgalQkC7Ynh8NEJRpCYHcX4Y5M6lwuqvVMEU3S4dO00h3nyDRC7",
-      );
-      setStripe(stripeInstance);
-      setStripeLoaded(true);
+    // Check if Stripe is already loaded
+    console.log("Reached use effect for stripe");
+    if (window.Stripe && !stripe) {
+      handleStripeLoad();
+      console.log("LOADED STRIPE");
     }
   }, [stripe]);
 
@@ -91,6 +90,23 @@ export default function PaymentPage() {
 
     loadData();
   }, [orderId]);
+
+  const handleStripeLoad = () => {
+    console.log("Stripe script loaded, window.Stripe:", !!window.Stripe);
+    if (window.Stripe && !stripe) {
+      try {
+        const stripeInstance = window.Stripe(
+          "pk_test_51RRyaqFNJgeQJYSon9GUdJZnPCfw2wXjqmRobo58hdWrSZywgalQkC7Ynh8NEJRpCYHcX4Y5M6lwuqvVMEU3S4dO00h3nyDRC7",
+        );
+        setStripe(stripeInstance);
+        setStripeLoaded(true);
+        console.log("Stripe initialized successfully");
+      } catch (error) {
+        console.error("Error initializing Stripe:", error);
+        setError("Failed to initialize payment system");
+      }
+    }
+  };
 
   useEffect(() => {
     if (stripeLoaded && stripe && clientSecret && !elements && !cardElement) {
@@ -201,7 +217,22 @@ export default function PaymentPage() {
 
   return (
     <>
-      <Script src="https://js.stripe.com/v3/" strategy="afterInteractive" />
+      {/* <meta
+        httpEquiv="Content-Security-Policy"
+        content="
+    default-src *;
+    script-src * 'unsafe-inline' 'unsafe-eval' data: blob:;
+    style-src * 'unsafe-inline' data:;
+    img-src * data: blob:;
+    connect-src * data: blob:;
+    frame-src *;
+"
+      /> */}
+      <Script
+        src="https://js.stripe.com/v3/"
+        strategy="afterInteractive"
+        onLoad={handleStripeLoad}
+      />
 
       <div className={styles.container}>
         <Navbar activePage="payment" user={user} onLogout={handleLogout} />

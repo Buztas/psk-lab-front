@@ -7,6 +7,7 @@ import AdminNavbar from "../../../AdminNavbar";
 import menuService from "@/services/menuService";
 import adminMenuService from "@/services/data_manipulation_services/adminMenuService";
 import authService from "@/services/authService";
+import { variationsService } from "@/services/variationsService";
 import { useParams } from "next/navigation";
 
 export default function EditMenuItemPage() {
@@ -21,25 +22,33 @@ export default function EditMenuItemPage() {
     price: "",
     stock: "",
   });
-  const [variations, setVariations] = useState([]);
+
+  const [menuItem, setMenuItem] = useState(null);
+  const [allVariations, setAllVariations] = useState([]);
+  const [selectedVariationIds, setSelectedVariationIds] = useState([]);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [menuItem, setMenuItem] = useState(null);
 
   useEffect(() => {
     const loadItem = async () => {
       try {
         if (!authService.isAuthenticated()) {
-          router.push("/")
-          return
+          router.push("/");
+          return;
         }
 
-        const currentUser = authService.getCurrentUser()
+        const currentUser = authService.getCurrentUser();
         if (currentUser.role !== "ADMIN") {
-          router.push("/dashboard")
-          return
+          router.push("/dashboard");
+          return;
         }
-        const item = await menuService.getMenuItemById(id);
+
+        const [item, variationData] = await Promise.all([
+          menuService.getMenuItemById(id),
+          variationsService.getItemVariations(),
+        ]);
+
         setForm({
           name: item.name,
           description: item.description,
@@ -49,9 +58,8 @@ export default function EditMenuItemPage() {
         });
 
         setMenuItem(item);
-
-        setVariations(item.variations || []);
-        setLoading(false);
+        setAllVariations(variationData.content || []);
+        setSelectedVariationIds(item.variations?.map((v) => v.id) || []);
       } catch (err) {
         setError("Failed to load menu item.");
       } finally {
@@ -66,20 +74,6 @@ export default function EditMenuItemPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleVariationChange = (index, key, value) => {
-    const updated = [...variations];
-    updated[index][key] = value;
-    setVariations(updated);
-  };
-
-  const addVariation = () => {
-    setVariations([...variations, { name: "", price: "", stock: "" }]);
-  };
-
-  const removeVariation = (index) => {
-    setVariations(variations.filter((_, i) => i !== index));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -91,12 +85,7 @@ export default function EditMenuItemPage() {
         price: parseFloat(form.price),
         stock: parseInt(form.stock, 10),
         version: menuItem.version,
-        variations: variations.map((v) => ({
-          id: v.id || undefined,
-          name: v.name,
-          price: parseFloat(v.price),
-          stock: parseInt(v.stock, 10),
-        })),
+        variations: selectedVariationIds.map((id) => ({ id })),
       };
 
       await adminMenuService.updateMenuItem(id, payload);
@@ -160,7 +149,7 @@ export default function EditMenuItemPage() {
                 placeholder="Enter description"
                 rows={3}
                 required
-                style={{ 
+                style={{
                   resize: "vertical",
                   width: "100%",
                   padding: "0.65rem 0.85rem",
@@ -169,10 +158,10 @@ export default function EditMenuItemPage() {
                   borderRadius: "6px",
                   backgroundColor: "#fff",
                   boxShadow: "inset 0 1px 2px rgba(0,0,0,0.02)",
-                  transition: "border 0.2s ease"
+                  transition: "border 0.2s ease",
                 }}
-                onFocus={(e) => e.target.style.borderColor = "#8b4513"}
-                onBlur={(e) => e.target.style.borderColor = "#ddd"}
+                onFocus={(e) => (e.target.style.borderColor = "#8b4513")}
+                onBlur={(e) => (e.target.style.borderColor = "#ddd")}
               />
             </div>
 
@@ -232,98 +221,38 @@ export default function EditMenuItemPage() {
             </div>
 
             <div className={styles.optionSection}>
-              <h3 className={styles.optionTitle}>Item Variations</h3>
+              <h3 className={styles.optionTitle}>Available Variations</h3>
               <p style={{ fontSize: "0.9rem", color: "#666", marginBottom: "1rem" }}>
-                Add specific variations for this menu item:
+                Select variations that can be added to this menu item:
               </p>
 
               <div className={styles.checkboxGroup}>
-                {variations.map((variation, index) => (
-                  <div
-                    key={index}
-                    className={styles.selectedVariationsSection}
-                    style={{ gap: "0.75rem" }}
-                  >
-                    <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                      <label style={{ fontSize: "0.9rem", fontWeight: "500", color: "#333" }}>
-                        Variation Name:
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter variation name"
-                        value={variation.name}
-                        onChange={(e) =>
-                          handleVariationChange(index, "name", e.target.value)
-                        }
-                        className={styles.quantityInput}
-                        required
-                      />
-                    </div>
-
-                    <div style={{ display: "flex", gap: "1rem" }}>
-                      <div style={{ flex: 1 }}>
-                        <label style={{ fontSize: "0.9rem", fontWeight: "500", color: "#333" }}>
-                          Price (EUR):
-                        </label>
-                        <input
-                          type="number"
-                          placeholder="0.00"
-                          value={variation.price}
-                          onChange={(e) =>
-                            handleVariationChange(index, "price", e.target.value)
-                          }
-                          step="0.01"
-                          min="0"
-                          className={styles.quantityInput}
-                          required
-                        />
-                      </div>
-
-                      <div style={{ flex: 1 }}>
-                        <label style={{ fontSize: "0.9rem", fontWeight: "500", color: "#333" }}>
-                          Stock:
-                        </label>
-                        <input
-                          type="number"
-                          placeholder="0"
-                          value={variation.stock}
-                          onChange={(e) =>
-                            handleVariationChange(index, "stock", e.target.value)
-                          }
-                          min="0"
-                          className={styles.quantityInput}
-                          required
-                        />
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      className={styles.deleteButton || styles.backButton}
-                      onClick={() => removeVariation(index)}
-                      style={{ 
-                        marginTop: "0.5rem",
-                        backgroundColor: "#dc3545",
-                        color: "white"
+                {allVariations.map((variation) => (
+                  <label key={variation.id} className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      className={styles.checkboxInput}
+                      checked={selectedVariationIds.includes(variation.id)}
+                      onChange={() => {
+                        setSelectedVariationIds((prev) =>
+                          prev.includes(variation.id)
+                            ? prev.filter((id) => id !== variation.id)
+                            : [...prev, variation.id]
+                        );
                       }}
-                    >
-                      🗑️ Remove Variation
-                    </button>
-                  </div>
+                    />
+                    <span className={styles.checkboxText}>
+                      {variation.name} – €{variation.price.toFixed(2)} – Stock: {variation.stock}
+                    </span>
+                  </label>
                 ))}
               </div>
 
-              <button
-                type="button"
-                className={styles.addToCartButton}
-                onClick={addVariation}
-                style={{ 
-                  backgroundColor: "#28a745",
-                  marginTop: "1rem"
-                }}
-              >
-                + Add New Variation
-              </button>
+              {allVariations.length === 0 && (
+                <p style={{ fontSize: "0.9rem", color: "#999", fontStyle: "italic" }}>
+                  No variations available. Create variations first to add them to menu items.
+                </p>
+              )}
             </div>
 
             <div style={{ marginTop: "2rem", display: "flex", gap: "1rem", flexDirection: "column" }}>

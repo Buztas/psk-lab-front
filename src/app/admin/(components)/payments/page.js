@@ -13,6 +13,7 @@ export default function PaymentsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [updating, setUpdating] = useState({});
+  const [selectedStatuses, setSelectedStatuses] = useState({});
 
   useEffect(() => {
     const loadPaymentsPage = async () => {
@@ -28,7 +29,13 @@ export default function PaymentsPage() {
           return;
         }
 
-        await fetchPayments();
+        const paymentsData = await fetchPayments();
+        setSelectedStatuses(
+          paymentsData.reduce((acc, p) => {
+            acc[p.id] = p.status;
+            return acc;
+          }, {}),
+        );
       } catch (err) {
         console.error("Auth check failed:", err);
         setError("Authentication failed.");
@@ -39,55 +46,42 @@ export default function PaymentsPage() {
     loadPaymentsPage();
   }, [router]);
 
-  const fetchPayments = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const response = await paymentService.getAllPayments(0, 100);
-      console.log("Fetched payments:", response); // Debug log
-      setPayments(response.content || []);
-    } catch (err) {
-      console.error("Payment fetch failed:", err);
-      setError("Failed to load payments.");
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchPayments = async () => {
+  setLoading(true);
+  setError("");
+  try {
+    const response = await paymentService.getAllPayments(0, 100);
+    const data = response.content || [];
+    setPayments(data);
+    setSelectedStatuses(
+      data.reduce((acc, p) => {
+        acc[p.id] = p.status;
+        return acc;
+      }, {})
+    );
+    return data;
+  } catch (err) {
+    console.error("Payment fetch failed:", err);
+    setError("Failed to load payments.");
+    return [];
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleDelete = async (paymentId, version) => {
-    if (!paymentId) {
-      console.warn("Missing paymentId for deletion");
-      return;
-    }
 
-    // Make sure version is provided
-    if (version === undefined || version === null) {
-      console.warn("Missing version for deletion");
-      alert("Version information is missing. Please refresh the page and try again.");
-      return;
-    }
-
-    if (!confirm("Are you sure you want to delete this payment?")) return;
-
-    try {
-      console.log(`Deleting payment: ${paymentId}, version: ${version}`); // Debug log
-      await paymentService.deletePayment(paymentId, version);
-      setPayments((prev) => prev.filter((p) => p.paymentId !== paymentId));
-      alert("Payment deleted successfully!");
-    } catch (err) {
-      console.error("Delete failed:", err);
-      alert(`Failed to delete payment: ${err.message}`);
-    }
-  };
-
-  const handleStatusUpdate = async (paymentId, newStatus, currentTransactionId) => {
-    if (!paymentId) {
-      console.warn("Missing paymentId for status update");
+  const handleStatusUpdate = async (
+    id,
+    newStatus,
+    currentTransactionId,
+  ) => {
+    if (!id) {
+      console.warn("Missing id for status update");
       return;
     }
 
     // Find the current payment to get the current status
-    const currentPayment = payments.find(p => p.paymentId === paymentId);
+    const currentPayment = payments.find((p) => p.id === id);
     if (!currentPayment) {
       console.warn("Payment not found in current list");
       return;
@@ -98,40 +92,42 @@ export default function PaymentsPage() {
       return;
     }
 
-    setUpdating(prev => ({ ...prev, [paymentId]: true }));
-    
+    setUpdating((prev) => ({ ...prev, [id]: true }));
+
     try {
-      console.log(`Updating payment status: ${paymentId}, status: ${newStatus}, transactionId: ${currentTransactionId}`); // Debug log
-      
+      console.log(
+        `Updating payment status: ${id}, status: ${newStatus}, transactionId: ${currentTransactionId}`,
+      ); // Debug log
+
       await paymentService.updatePaymentStatus(
-        paymentId,
+        id,
         newStatus,
-        currentTransactionId || null
+        currentTransactionId || null,
       );
-      
+
       // Update local state immediately for better UX
-      setPayments(prev => prev.map(p => 
-        p.paymentId === paymentId 
-          ? { ...p, status: newStatus }
-          : p
-      ));
-      
+      setPayments((prev) =>
+        prev.map((p) =>
+          p.id === id ? { ...p, status: newStatus } : p,
+        ),
+      );
+
       // Optionally refetch to ensure consistency
       // await fetchPayments();
-      
+
       console.log("Status updated successfully");
     } catch (err) {
       console.error("Status update failed:", err);
       alert(`Failed to update payment status: ${err.message}`);
-      
+
       // Revert the select to original status on error
       await fetchPayments();
     } finally {
-      setUpdating(prev => ({ ...prev, [paymentId]: false }));
+      setUpdating((prev) => ({ ...prev, [id]: false }));
     }
   };
 
-  const statusOptions = ["PENDING", "COMPLETED", "FAILED", "CANCELLED"];
+  const statusOptions = ["PENDING", "COMPLETED", "PROCESSING", "CANCELLED"];
 
   return (
     <div className={styles.container}>
@@ -160,51 +156,47 @@ export default function PaymentsPage() {
                   <th>Amount</th>
                   <th>Date</th>
                   <th>Version</th>
-                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {payments.map((p) => (
-                  <tr key={p.paymentId}>
-                    <td>{p.paymentId}</td>
+                  <tr key={`payment-${p.id}`}>
+                    <td>{p.id}</td>
                     <td>{p.orderId}</td>
-                    <td>{p.transactionId || 'N/A'}</td>
+                    <td>{p.transactionId || "N/A"}</td>
                     <td>
                       <select
-                        value={p.status}
-                        onChange={(e) =>
+                        value={selectedStatuses[p.id] ?? p.paymentStatus}
+                        onChange={(e) => {
+                          const newStatus = e.target.value;
+                          setSelectedStatuses((prev) => ({
+                            ...prev,
+                            [p.id]: newStatus,
+                          }));
                           handleStatusUpdate(
-                            p.paymentId,
-                            e.target.value,
-                            p.transactionId
-                          )
-                        }
-                        disabled={updating[p.paymentId]}
+                            p.id,
+                            newStatus,
+                            p.transactionId,
+                          );
+                        }}
+                        disabled={updating[p.id]}
                         style={{
-                          opacity: updating[p.paymentId] ? 0.5 : 1,
-                          cursor: updating[p.paymentId] ? 'wait' : 'pointer'
+                          opacity: updating[p.id] ? 0.5 : 1,
+                          cursor: updating[p.id] ? "wait" : "pointer",
                         }}
                       >
                         {statusOptions.map((opt) => (
-                          <option key={opt} value={opt}>
+                          <option key={`${p.id}-${opt}`} value={opt}>
                             {opt}
                           </option>
                         ))}
                       </select>
-                      {updating[p.paymentId] && <span> ⏳</span>}
+
+                      {updating[p.id] && <span> ⏳</span>}
                     </td>
                     <td>{p.amount} €</td>
                     <td>{new Date(p.paymentDate).toLocaleDateString()}</td>
                     <td>{p.version}</td>
-                    <td>
-                      <button
-                        className={styles.actionButton}
-                        onClick={() => handleDelete(p.paymentId, p.version)}
-                        disabled={updating[p.paymentId]}
-                      >
-                        🗑️ Delete
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>

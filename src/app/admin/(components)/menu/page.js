@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import styles from "./menu.module.css"
 import AdminNavbar from "../AdminNavbar"
 import authService from "@/services/authService"
+import adminMenuService from "@/services/data_manipulation_services/adminMenuService"
 import menuService from "@/services/menuService"
 
 export default function MenuPage() {
@@ -54,7 +55,7 @@ export default function MenuPage() {
     if (!confirmDelete) return
 
     try {
-      await menuService.deleteMenuItem(id)
+      await adminMenuService.deleteMenuItem(id)
       setMenuItems(prev => prev.filter(item => item.id !== id))
     } catch (err) {
       console.error("Error deleting item:", err)
